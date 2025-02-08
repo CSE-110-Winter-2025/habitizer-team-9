@@ -13,6 +13,8 @@ dependencies {
     implementation(libs.androidx.annotations)
     implementation(project(":observables"))
     implementation(project(":observables"))
+    implementation(project(":observables"))
+    implementation(project(":observables"))
 
     testImplementation(libs.junit4)
     testImplementation(libs.hamcrest)

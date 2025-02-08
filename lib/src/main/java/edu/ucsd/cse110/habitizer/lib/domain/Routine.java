@@ -1,39 +1,44 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
-
-import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
-import edu.ucsd.cse110.observables.Subject;
-
-import java.time.Instant;
 import java.time.Duration;
-import java.util.List;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Routine {
-    private final InMemoryDataSource dataSource;
-    public Routine(InMemoryDataSource dataSource) {
-        this.dataSource = dataSource;
+    private String name;
+    private Map<Integer, Task> tasks;
+    private boolean isStarted;
+
+    private Duration goalTime;
+    private Instant routineStartTime;
+    private Instant taskStartTime;
+
+    public Routine(String name) {
+        this.name = name;
+        tasks = new HashMap<>();
+        isStarted = false;
+        goalTime = Duration.ofSeconds(0);
     }
 
-    public Subject<Task> find(int id){
-        return dataSource.getTaskSubject(id);
+    public void startRoutine(Instant now) {
+        isStarted = true;
+        routineStartTime = now;
+        taskStartTime = now;
     }
 
-    public Subject<List<Task>> findAll(){
-        return dataSource.getAllTasksSubject();
+    public void checkOffTask(Instant now, int id) {
+        taskStartTime = now;
+        // Once task class is set up, make sure to complete this method
     }
 
-    public void save(Task task){
-        dataSource.putTask(task);
+    public void setGoalTime(int timeInMinutes) {
+        int seconds = timeInMinutes * 60;
+        goalTime = Duration.ofSeconds(seconds);
     }
 
-    public void save(List<Task> tasks){
-        dataSource.putTasks(tasks);
+    public String getName() {
+        return name;
     }
-
-    public void checkOff(Task task){
-        // update task Instant
-        dataSource.setPreviousTimeStamp(Instant.now());
-    }
-
 
 }

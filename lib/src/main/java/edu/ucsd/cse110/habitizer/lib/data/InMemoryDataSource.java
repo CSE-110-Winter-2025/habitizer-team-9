@@ -6,72 +6,56 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.ucsd.cse110.observables.MutableSubject;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 import edu.ucsd.cse110.observables.Subject;
 
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class InMemoryDataSource {
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, PlainMutableSubject<Task>> taskSubjects = new HashMap<>();
+    private final Map<Integer, Routine> routines = new HashMap<>();
+    private final Map<Integer, PlainMutableSubject<Routine>> routineSubjects = new HashMap<>();
+    private final Subject<List<Routine>> allRoutinesSubject = new PlainMutableSubject<>();
 
-    private final Subject<List<Task>> allTasksSubject = new PlainMutableSubject<>();
-    private Instant startRoutineTimeStamp;
-    private Instant previousTimeStamp;
+    public InMemoryDataSource() {
 
-    private String name;
-    private Duration duration = Duration.ofMinutes(60);
-
-
-    public List<Task> getTasks() {
-        return List.copyOf(tasks.values());
     }
 
-    public Task getTask(int id){
-        return tasks.get(id);
+    public final static List<Routine> DEFAULT_ROUTINES = List.of(new Routine("Morning Routine"), new Routine("Evening Routine"));
+
+    public static InMemoryDataSource fromDefault() {
+        var data = new InMemoryDataSource();
+        data.putRoutines(DEFAULT_ROUTINES);
+        return data;
+    }
+    public List<Routine> getRoutines() {
+        return List.copyOf(routines.values());
     }
 
-    public Instant getStartRoutineTimeStamp(){
-        return startRoutineTimeStamp;
+    public Routine getRoutine(int id){
+        return routines.get(id);
     }
 
-    public Instant getPreviousTimeStamp(){
-        return previousTimeStamp;
-    }
-
-    public void setPreviousTimeStamp(Instant now){
-        previousTimeStamp = now;
-    }
-
-    public Duration getDuration(){
-        return duration;
-    }
-
-    public void setDuration(long minutes){
-        duration = Duration.ofMinutes(minutes);
-    }
-
-    public Subject<Task> getTaskSubject(int id){
-        if(!taskSubjects.containsKey(id)){
-            var subject = new PlainMutableSubject<Task>();
-            subject.setValue(getTask(id));
-            taskSubjects.put(id, subject);
+    public Subject<Routine> getRoutineSubject(int id){
+        if(!routineSubjects.containsKey(id)){
+            var subject = new PlainMutableSubject<Routine>();
+            subject.setValue(getRoutine(id));
+            routineSubjects.put(id, subject);
         }
-        return taskSubjects.get(id);
+        return routineSubjects.get(id);
     }
 
-    public Subject<List<Task>> getAllTasksSubject() { return allTasksSubject;}
+    public Subject<List<Routine>> getAllRoutinesSubject() { return allRoutinesSubject;}
 
-    public void putTask(Task task){
-
-    }
-
-    public void putTasks(List<Task> tasks){
+    public void putRoutine(Routine routine){
 
     }
 
-    public void removeTask(int id){}
+    public void putRoutines(List<Routine> routines){
+
+    }
+
+    public void removeRoutine(int id){}
 
 
 }
