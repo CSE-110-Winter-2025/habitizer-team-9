@@ -38,9 +38,11 @@ public class RoutinesFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-        this.adapter = new RoutineListAdapter(requireContext(), List.of(new Routine("Morning Routine"), new Routine("Evening Routine")));
+        // new Routine("Morning"), new Routine("Evening")
+        this.adapter = new RoutineListAdapter(requireContext(), List.of());
         activityModel.getRoutines().observe(routines -> {
             adapter.clear();
+            assert routines != null;
             adapter.addAll(new ArrayList<>(routines));
             adapter.notifyDataSetChanged();
         });

@@ -1,12 +1,16 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
+import androidx.annotation.Nullable;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Routine {
-    private String name;
+    private @Nullable  String name;
+
+    private int id;
     private Map<Integer, Task> tasks;
     private boolean isStarted;
 
@@ -14,7 +18,8 @@ public class Routine {
     private Instant routineStartTime;
     private Instant taskStartTime;
 
-    public Routine(String name) {
+    public Routine(int id, String name) {
+        this.id = id;
         this.name = name;
         tasks = new HashMap<>();
         isStarted = false;
@@ -39,6 +44,10 @@ public class Routine {
 
     public String getName() {
         return name;
+    }
+
+    public @Nullable Integer id() {
+        return id;
     }
 
 }

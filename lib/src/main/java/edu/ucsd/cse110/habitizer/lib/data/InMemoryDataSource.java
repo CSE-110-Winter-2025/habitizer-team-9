@@ -15,13 +15,15 @@ import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 public class InMemoryDataSource {
     private final Map<Integer, Routine> routines = new HashMap<>();
     private final Map<Integer, PlainMutableSubject<Routine>> routineSubjects = new HashMap<>();
-    private final Subject<List<Routine>> allRoutinesSubject = new PlainMutableSubject<>();
+    private final PlainMutableSubject<List<Routine>> allRoutinesSubject = new PlainMutableSubject<>();
 
     public InMemoryDataSource() {
 
     }
 
-    public final static List<Routine> DEFAULT_ROUTINES = List.of(new Routine("Morning Routine"), new Routine("Evening Routine"));
+    public final static List<Routine> DEFAULT_ROUTINES = List.of(
+            new Routine(0,"Morning Routine"),
+            new Routine(1, "Evening Routine"));
 
     public static InMemoryDataSource fromDefault() {
         var data = new InMemoryDataSource();
@@ -49,10 +51,26 @@ public class InMemoryDataSource {
 
     public void putRoutine(Routine routine){
 
+        routines.put(routine.id(), routine);
+
+        if (routineSubjects.containsKey(routine.id())) {
+            routineSubjects.get(routine.id()).setValue(routine);
+        }
+
+        allRoutinesSubject.setValue(getRoutines());
+
     }
 
     public void putRoutines(List<Routine> routines){
 
+        routines.forEach(routine -> this.routines.put(routine.id(), routine));
+
+        routines.forEach(routine -> {
+            if (routineSubjects.containsKey(routine.id())) {
+                routineSubjects.get(routine.id()).setValue(routine);
+            }
+        });
+        allRoutinesSubject.setValue(getRoutines());
     }
 
     public void removeRoutine(int id){}
