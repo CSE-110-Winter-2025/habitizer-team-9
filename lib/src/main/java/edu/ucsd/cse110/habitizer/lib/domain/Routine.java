@@ -7,11 +7,13 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.ucsd.cse110.observables.Subject;
+
 public class Routine {
     private @Nullable  String name;
 
     private int id;
-    private Map<Integer, Task> tasks;
+
     private boolean isStarted;
 
     private Duration goalTime;
@@ -21,7 +23,6 @@ public class Routine {
     public Routine(int id, String name) {
         this.id = id;
         this.name = name;
-        tasks = new HashMap<>();
         isStarted = false;
         goalTime = Duration.ofSeconds(0);
     }
@@ -49,5 +50,7 @@ public class Routine {
     public @Nullable Integer id() {
         return id;
     }
+
+
 
 }

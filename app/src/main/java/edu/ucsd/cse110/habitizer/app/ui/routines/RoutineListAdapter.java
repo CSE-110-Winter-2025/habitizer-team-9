@@ -7,11 +7,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsd.cse110.habitizer.app.R;
 import edu.ucsd.cse110.habitizer.app.databinding.ListItemRoutineBinding;
+import edu.ucsd.cse110.habitizer.app.ui.tasks.TaskListFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class RoutineListAdapter extends ArrayAdapter<Routine> {
@@ -34,6 +38,14 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         }
 
         binding.editRoutine.setText(routine.getName());
+
+        binding.startRoutineButton.setOnClickListener(v -> {
+            FragmentActivity activity = (FragmentActivity) getContext();
+            FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, TaskListFragment.newInstance(routine));
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
 
         return binding.getRoot();
     }

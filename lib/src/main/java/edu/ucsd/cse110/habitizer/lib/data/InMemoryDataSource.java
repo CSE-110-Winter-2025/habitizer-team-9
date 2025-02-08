@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
+import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 import edu.ucsd.cse110.observables.Subject;
 
@@ -14,6 +15,11 @@ import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class InMemoryDataSource {
     private final Map<Integer, Routine> routines = new HashMap<>();
+
+    private final Map<Routine, List<Task>> routineTaskMap = new HashMap<>();
+
+    private final Map<Routine, PlainMutableSubject<List<Task>>> routineTaskSubjects = new HashMap<>();
+    private final PlainMutableSubject<Map<Routine, List<Task>>> allRoutineTasks = new PlainMutableSubject<>();
     private final Map<Integer, PlainMutableSubject<Routine>> routineSubjects = new HashMap<>();
     private final PlainMutableSubject<List<Routine>> allRoutinesSubject = new PlainMutableSubject<>();
 
@@ -34,6 +40,10 @@ public class InMemoryDataSource {
         return List.copyOf(routines.values());
     }
 
+    public List<Task> getTasks(Routine routine){
+        return List.copyOf(routineTaskMap.get(routine));
+    }
+
     public Routine getRoutine(int id){
         return routines.get(id);
     }
@@ -48,6 +58,33 @@ public class InMemoryDataSource {
     }
 
     public Subject<List<Routine>> getAllRoutinesSubject() { return allRoutinesSubject;}
+
+    public Subject<Map<Routine, List<Task>>> getMapSubject(){ return allRoutineTasks;}
+
+    public Subject<List<Task>> getTasksSubject(Routine routine){
+        return routineTaskSubjects.get(routine);
+    }
+
+    public void putTask(Routine routine, Task task){
+        routineTaskMap.get(routine).add(task);
+
+        if (routineTaskMap.containsKey(routine)) {
+            routineTaskSubjects.get(routine).setValue(routineTaskMap.get(routine));
+        }
+
+        allRoutineTasks.setValue(routineTaskMap);
+    }
+
+    public void putTasks(Routine routine, List<Task> tasks){
+        tasks.forEach(task -> routineTaskMap.get(routine).add(task));
+
+        tasks.forEach(task -> {
+            if (routineTaskMap.containsKey(routine)) {
+                routineTaskSubjects.get(routine).setValue(routineTaskMap.get(routine));
+            }
+        });
+        allRoutineTasks.setValue(routineTaskMap);
+    }
 
     public void putRoutine(Routine routine){
 

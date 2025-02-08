@@ -6,6 +6,7 @@ import edu.ucsd.cse110.observables.Subject;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 public class RoutineRepository {
     private final InMemoryDataSource dataSource;
@@ -20,6 +21,10 @@ public class RoutineRepository {
 
     public Subject<List<Routine>> findAll(){
         return dataSource.getAllRoutinesSubject();
+    }
+
+    public Subject<Map<Routine, List<Task>>> findAllMappings(){
+        return dataSource.getMapSubject();
     }
 
     public void save(Routine routine){
