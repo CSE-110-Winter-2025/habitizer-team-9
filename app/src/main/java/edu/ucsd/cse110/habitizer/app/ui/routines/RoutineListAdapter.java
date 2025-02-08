@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class RoutineListAdapter extends ArrayAdapter<Routine> {
         binding.editRoutine.setText(routine.getName());
 
         binding.startRoutineButton.setOnClickListener(v -> {
+            routine.startRoutine(Instant.now());
             FragmentActivity activity = (FragmentActivity) getContext();
             FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fragment_container, TaskListFragment.newInstance(routine));

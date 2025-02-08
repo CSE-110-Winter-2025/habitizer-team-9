@@ -2,6 +2,7 @@ package edu.ucsd.cse110.habitizer.lib.data;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,8 +88,12 @@ public class InMemoryDataSource {
     }
 
     public void putRoutine(Routine routine){
-
         routines.put(routine.id(), routine);
+
+        if (!routineTaskMap.containsKey(routine)) {
+            routineTaskMap.put(routine, new ArrayList<>());
+            routineTaskSubjects.put(routine, new PlainMutableSubject<>(new ArrayList<>()));
+        }
 
         if (routineSubjects.containsKey(routine.id())) {
             routineSubjects.get(routine.id()).setValue(routine);
@@ -110,7 +115,9 @@ public class InMemoryDataSource {
         allRoutinesSubject.setValue(getRoutines());
     }
 
-    public void removeRoutine(int id){}
+    public void removeRoutine(int id){
+        // NOT YET IMPLEMENTED
+    }
 
 
 }
