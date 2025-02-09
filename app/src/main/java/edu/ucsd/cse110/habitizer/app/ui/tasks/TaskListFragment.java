@@ -17,11 +17,12 @@ import edu.ucsd.cse110.habitizer.app.databinding.FragmentTasksBinding;
 import edu.ucsd.cse110.habitizer.app.ui.routines.RoutinesFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
+import edu.ucsd.cse110.habitizer.app.ui.tasks.TaskListAdapter;
 
 public class TaskListFragment extends Fragment {
     private MainViewModel activityModel;
     private FragmentTasksBinding view;
-//    private TaskListAdapter adapter;
+    private TaskListAdapter adapter;
 
     private Routine routine;
 
@@ -45,15 +46,15 @@ public class TaskListFragment extends Fragment {
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
 
-//        this.adapter = new TaskListAdapter(requireContext(), List.of());
-//        activityModel.getMap().observe(map -> {
-//            adapter.clear();
-//            assert map != null;
-//            assert routine != null;
-//            adapter.addAll(new ArrayList<Task>(map.get(routine)));
-//            adapter.notifyDataSetChanged();
-//
-//        });
+        this.adapter = new TaskListAdapter(requireContext(), List.of());
+        activityModel.getMap().observe(map -> {
+            adapter.clear();
+            assert map != null;
+            assert routine != null;
+            adapter.addAll(new ArrayList<Task>(map.get(routine)));
+            adapter.notifyDataSetChanged();
+
+        });
 
 
     }
@@ -62,8 +63,8 @@ public class TaskListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = FragmentTasksBinding.inflate(inflater, container, false);
         view.routineName.setText(routine.getName());
-        //IMPLEMENT WHEN TASK IS IMPLEMENTED
-        // view.taskList.setAdapter(adapter);
+        //IMPLEMENT WHEN TASK IS IMPLEMENTED <<
+        view.taskList.setAdapter(adapter);
 
         return view.getRoot();
     }
