@@ -10,6 +10,7 @@ import java.util.Map;
 import edu.ucsd.cse110.observables.Subject;
 
 public class Routine {
+
     private @Nullable  String name;
 
     private int id;
@@ -45,6 +46,38 @@ public class Routine {
 
     public String getName() {
         return name;
+    }
+
+    public boolean getIsStarted() {
+        return isStarted;
+    }
+
+    public void setIsStarted(boolean isStarted) {
+        this.isStarted = isStarted;
+    }
+
+    public Instant getRoutineStartTime() {
+        return routineStartTime;
+    }
+
+    public void setRoutineStartTime(Instant instant) {
+        this.routineStartTime = instant;
+    }
+
+    public Instant getTaskStartTime() {
+        return taskStartTime;
+    }
+
+    public void setTaskStartTime(Instant instant) {
+        this.taskStartTime = instant;
+    }
+
+    public Duration getGoalTime() {
+        return goalTime;
+    }
+
+    public void setGoalTime(Duration goalTime) {
+        this.goalTime = goalTime;
     }
 
     public @Nullable Integer id() {
