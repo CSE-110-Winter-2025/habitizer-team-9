@@ -4,24 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutinesBinding;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentTasksBinding;
-import edu.ucsd.cse110.habitizer.app.ui.routines.RoutinesFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
+import edu.ucsd.cse110.habitizer.lib.domain.RoutineTimer;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class TaskListFragment extends Fragment {
     private MainViewModel activityModel;
     private FragmentTasksBinding view;
 //    private TaskListAdapter adapter;
+    private RoutineTimer routineTimer;
+    private TextView timerTextView;
 
     private Routine routine;
 
@@ -44,7 +44,15 @@ public class TaskListFragment extends Fragment {
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
-
+        routineTimer = new RoutineTimer(time -> {
+            if (timerTextView != null) {
+                int minutes = time / 60;
+                int seconds = time % 60;
+                requireActivity().runOnUiThread(() ->
+                        timerTextView.setText(String.format("%02d:%02d", minutes, seconds))
+                );
+            }
+        });
 //        this.adapter = new TaskListAdapter(requireContext(), List.of());
 //        activityModel.getMap().observe(map -> {
 //            adapter.clear();
@@ -64,6 +72,12 @@ public class TaskListFragment extends Fragment {
         view.routineName.setText(routine.getName());
         //IMPLEMENT WHEN TASK IS IMPLEMENTED
         // view.taskList.setAdapter(adapter);
+
+        // Timer TextView from XML
+        timerTextView = view.timerTextView;
+
+        // Start the timer when the routine starts
+        routineTimer.start();
 
         return view.getRoot();
     }
