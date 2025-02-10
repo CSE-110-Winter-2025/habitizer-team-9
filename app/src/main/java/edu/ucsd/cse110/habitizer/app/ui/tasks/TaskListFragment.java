@@ -73,8 +73,10 @@ public class TaskListFragment extends Fragment {
         mockModeToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 routineTimer.enableMockMode(); // Enable mock mode
+                advanceTimeButton.setEnabled(true); // Enable advance time button
             } else {
                 routineTimer.disableMockMode(); // Disable mock mode
+                advanceTimeButton.setEnabled(false); // Disable advance time button
             }
         });
 
@@ -86,6 +88,9 @@ public class TaskListFragment extends Fragment {
                 timerTextView.setText("Enable Mock Mode First!");
             }
         });
+
+        // Initially disable advance time button if mock mode is off
+        advanceTimeButton.setEnabled(mockModeToggle.isChecked());
 
         // Start the timer
         routineTimer.start();
