@@ -46,6 +46,14 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
         binding.taskName.setText(task.getName());
 
+        binding.checkBox.setOnClickListener(v -> {
+            task.checkOff();
+            // Badly written test to make sure the boolean isCheckedOff turned to true when clicked.
+            // Couldn't figure out how to implement the test separately in TaskTest
+            if (!task.getIsCheckedOff()){
+                binding.taskName.setText("Not checked off");
+            }
+        });
 
         return binding.getRoot();
     }

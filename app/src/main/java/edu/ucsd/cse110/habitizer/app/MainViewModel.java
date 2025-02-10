@@ -53,4 +53,5 @@ public class MainViewModel extends ViewModel {
     public Subject<List<Routine>> getRoutines() {return routines;}
 
     public List<Routine> getListRoutines() {return routines.getValue();}
+
 }
