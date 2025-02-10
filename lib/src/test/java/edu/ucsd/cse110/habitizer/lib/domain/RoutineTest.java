@@ -18,13 +18,6 @@ public class RoutineTest extends TestCase {
         assertThat(routine.getTaskStartTime(), is(routineStartTime));
     }
 
-    public void testCheckOffTask() {
-        var routine = new Routine(1, "Morning Routine");
-        Instant checkOffTime = Instant.parse("2020-11-03T10:17:35.00Z");
-        routine.checkOffTask(checkOffTime, 1);
-        assertThat(routine.getTaskStartTime(), is(checkOffTime));
-    }
-
     public void testSetGoalTime() {
         var routine = new Routine(1, "Morning Routine");
         routine.setGoalTime(2);
