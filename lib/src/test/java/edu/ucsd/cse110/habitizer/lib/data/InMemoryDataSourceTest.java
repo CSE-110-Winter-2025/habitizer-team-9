@@ -18,7 +18,15 @@ public class InMemoryDataSourceTest extends TestCase {
         assertNotNull(dataSource);
         for (Routine defaultRoutine : InMemoryDataSource.DEFAULT_ROUTINES) {
             assertTrue(dataSource.getRoutines().contains(defaultRoutine));
+
         }
+        Routine defaultMorningRoutine = InMemoryDataSource.DEFAULT_ROUTINES.get(0);
+
+        assertEquals(dataSource.getTasks(defaultMorningRoutine), InMemoryDataSource.DEFAULT_MORNING_TASKS);
+
+        Routine defaultEveningRoutine = InMemoryDataSource.DEFAULT_ROUTINES.get(1);
+        assertEquals(dataSource.getTasks(defaultEveningRoutine), InMemoryDataSource.DEFAULT_EVENING_TASKS);
+
     }
 
     public void testPutTask() {
@@ -26,7 +34,7 @@ public class InMemoryDataSourceTest extends TestCase {
         Routine routine = new Routine(0, "Morning Routine");
         dataSource.putRoutine(routine);
 
-        Task task = new Task();
+        Task task = new Task(0, "Wake up");
         dataSource.putTask(routine, task);
 
         List<Task> tasksForRoutine = dataSource.getTasks(routine);
@@ -38,9 +46,9 @@ public class InMemoryDataSourceTest extends TestCase {
         Routine routine = new Routine(0, "Morning Routine");
         dataSource.putRoutine(routine);
 
-        Task task1 = new Task();
-        Task task2 = new Task();
-        Task task3 = new Task();
+        Task task1 = new Task(0, "Get out of bed");
+        Task task2 = new Task(1, "Brush teeth");
+        Task task3 = new Task(2, "Get dressed");
         dataSource.putTasks(routine, List.of(task1, task2, task3));
 
         List<Task> tasksForRoutine = dataSource.getTasks(routine);

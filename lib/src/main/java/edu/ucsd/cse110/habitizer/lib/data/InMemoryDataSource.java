@@ -32,9 +32,30 @@ public class InMemoryDataSource {
             new Routine(0,"Morning Routine"),
             new Routine(1, "Evening Routine"));
 
+    public final static List<Task> DEFAULT_MORNING_TASKS = List.of(
+            new Task(0, "Shower"),
+            new Task(1, "Brush teeth"),
+            new Task(2, "Dress"),
+            new Task(3, "Make coffee"),
+            new Task(4, "Make lunch"),
+            new Task(5, "Dinner prep"),
+            new Task(6, "Pack bag")
+    );
+
+    public final static List<Task> DEFAULT_EVENING_TASKS = List.of(
+            new Task(0, "Charge devices"),
+            new Task(1, "Prepare Dinner"),
+            new Task(2, "Eat Dinner"),
+            new Task(3, "Wash dishes"),
+            new Task(4, "Pack bag"),
+            new Task(5, "Do homework")
+    );
+
     public static InMemoryDataSource fromDefault() {
         var data = new InMemoryDataSource();
         data.putRoutines(DEFAULT_ROUTINES);
+        data.putTasks(DEFAULT_ROUTINES.get(0), DEFAULT_MORNING_TASKS);
+        data.putTasks(DEFAULT_ROUTINES.get(1), DEFAULT_EVENING_TASKS);
         return data;
     }
     public List<Routine> getRoutines() {
@@ -108,6 +129,10 @@ public class InMemoryDataSource {
         routines.forEach(routine -> this.routines.put(routine.id(), routine));
 
         routines.forEach(routine -> {
+            if (!routineTaskMap.containsKey(routine)) {
+                routineTaskMap.put(routine, new ArrayList<>());
+                routineTaskSubjects.put(routine, new PlainMutableSubject<>(new ArrayList<>()));
+            }
             if (routineSubjects.containsKey(routine.id())) {
                 routineSubjects.get(routine.id()).setValue(routine);
             }
@@ -118,6 +143,8 @@ public class InMemoryDataSource {
     public void removeRoutine(int id){
         // NOT YET IMPLEMENTED
     }
+
+
 
 
 }
