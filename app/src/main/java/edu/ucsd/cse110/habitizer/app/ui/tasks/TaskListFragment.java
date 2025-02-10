@@ -4,32 +4,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutinesBinding;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentTasksBinding;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineTimer;
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class TaskListFragment extends Fragment {
     private MainViewModel activityModel;
     private FragmentTasksBinding view;
-//    private TaskListAdapter adapter;
     private RoutineTimer routineTimer;
     private TextView timerTextView;
+    private ToggleButton mockModeToggle;
+    private Button advanceTimeButton;
 
     private Routine routine;
 
-    public TaskListFragment(Routine routine){
+    public TaskListFragment(Routine routine) {
         this.routine = routine;
     }
 
-    public static TaskListFragment newInstance(Routine routine){
+    public static TaskListFragment newInstance(Routine routine) {
         TaskListFragment fragment = new TaskListFragment(routine);
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -44,44 +45,58 @@ public class TaskListFragment extends Fragment {
         var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
         var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
         this.activityModel = modelProvider.get(MainViewModel.class);
-        routineTimer = new RoutineTimer(time -> {
+
+        // Initialize the timer
+        routineTimer = new RoutineTimer(secondsElapsed -> {
             if (timerTextView != null) {
-                int minutes = time / 60;
-                int seconds = time % 60;
+                int minutes = secondsElapsed / 60; // Convert seconds to minutes
                 requireActivity().runOnUiThread(() ->
-                        timerTextView.setText(String.format("%02d:%02d", minutes, seconds))
+                        timerTextView.setText(String.valueOf(minutes)) // Display minutes
                 );
             }
         });
-//        this.adapter = new TaskListAdapter(requireContext(), List.of());
-//        activityModel.getMap().observe(map -> {
-//            adapter.clear();
-//            assert map != null;
-//            assert routine != null;
-//            adapter.addAll(new ArrayList<Task>(map.get(routine)));
-//            adapter.notifyDataSetChanged();
-//
-//        });
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = FragmentTasksBinding.inflate(inflater, container, false);
-        view.routineName.setText(routine.getName());
-        //IMPLEMENT WHEN TASK IS IMPLEMENTED
-        // view.taskList.setAdapter(adapter);
 
-        // Timer TextView from XML
+        // Bind views
         timerTextView = view.timerTextView;
+        mockModeToggle = view.mockModeToggle;
+        advanceTimeButton = view.advanceTimeButton;
 
-        // Start the timer when the routine starts
+        // Set routine name
+        view.routineName.setText(routine.getName());
+
+        // Toggle mock mode
+        mockModeToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                routineTimer.enableMockMode(); // Enable mock mode
+            } else {
+                routineTimer.disableMockMode(); // Disable mock mode
+            }
+        });
+
+        // Advance time button
+        advanceTimeButton.setOnClickListener(v -> {
+            try {
+                routineTimer.advanceMockTime(30); // Advance time by 30 seconds
+            } catch (IllegalStateException e) {
+                timerTextView.setText("Enable Mock Mode First!");
+            }
+        });
+
+        // Start the timer
         routineTimer.start();
 
         return view.getRoot();
     }
 
-
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        routineTimer.stop(); // Stop the timer to prevent leaks
+        view = null;
+    }
 }
