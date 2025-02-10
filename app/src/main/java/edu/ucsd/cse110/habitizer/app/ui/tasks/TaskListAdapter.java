@@ -48,6 +48,10 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
         binding.checkBox.setOnClickListener(v -> {
             task.checkOff();
+            if(task.getIsCheckedOff())
+                binding.taskTimestamp.setText("Task Checked Off");
+            else
+                binding.taskTimestamp.setText("Task Incomplete");
         });
 
         return binding.getRoot();
