@@ -15,6 +15,8 @@ import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentTasksBinding;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineTimer;
+import edu.ucsd.cse110.habitizer.lib.domain.Task;
+import edu.ucsd.cse110.habitizer.app.ui.tasks.TaskListAdapter;
 
 public class TaskListFragment extends Fragment {
     private MainViewModel activityModel;
@@ -23,6 +25,7 @@ public class TaskListFragment extends Fragment {
     private TextView timerTextView;
     private ToggleButton mockModeToggle;
     private Button advanceTimeButton;
+    private TaskListAdapter adapter;
 
     private Routine routine;
 
@@ -54,6 +57,16 @@ public class TaskListFragment extends Fragment {
                         timerTextView.setText(String.valueOf(minutes)) // Display minutes
                 );
             }
+        });
+
+        this.adapter = new TaskListAdapter(requireContext(), List.of());
+        activityModel.getMap().observe(map -> {
+            adapter.clear();
+            assert map != null;
+            assert routine != null;
+            adapter.addAll(new ArrayList<Task>(map.get(routine)));
+            adapter.notifyDataSetChanged();
+
         });
     }
 
@@ -94,6 +107,8 @@ public class TaskListFragment extends Fragment {
 
         // Start the timer
         routineTimer.start();
+        //IMPLEMENT WHEN TASK IS IMPLEMENTED <<
+        view.taskList.setAdapter(adapter);
 
         return view.getRoot();
     }

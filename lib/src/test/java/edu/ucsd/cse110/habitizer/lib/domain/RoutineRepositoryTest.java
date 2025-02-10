@@ -45,7 +45,7 @@ public class RoutineRepositoryTest extends TestCase {
         Routine routine = new Routine(0, "Morning Routine");
         dataSource.putRoutine(routine);
 
-        Task task = new Task();
+        Task task = new Task(0, "Wake up");
         dataSource.putTask(routine, task);
         RoutineRepository repository = new RoutineRepository(dataSource);
 
