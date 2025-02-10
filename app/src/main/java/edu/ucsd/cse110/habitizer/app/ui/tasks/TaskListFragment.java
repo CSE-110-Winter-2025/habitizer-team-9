@@ -57,12 +57,14 @@ public class TaskListFragment extends Fragment {
             if (timerTextView != null) {
                 int minutes = secondsElapsed / 60; // Convert seconds to minutes
                 requireActivity().runOnUiThread(() ->
-                        timerTextView.setText(String.valueOf(minutes)) // Display minutes
+                        timerTextView.setText(String.valueOf(minutes) + "m") // Display minutes
                 );
             }
         });
 
-        this.adapter = new TaskListAdapter(requireContext(), List.of());
+        routine.routineTimer = this.routineTimer;
+
+        this.adapter = new TaskListAdapter(requireContext(), List.of(), routine);
         activityModel.getMap().observe(map -> {
             adapter.clear();
             assert map != null;
