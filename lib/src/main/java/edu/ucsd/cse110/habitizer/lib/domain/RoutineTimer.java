@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 public class RoutineTimer {
     private Instant startTime;
     private long elapsedTime = 0; // Store elapsed time in seconds
+    public long oldElapsedTime = 0;
     private boolean mockMode = false;
     private ScheduledExecutorService scheduler;
     private boolean running = false;
@@ -26,7 +27,7 @@ public class RoutineTimer {
                 startTime = Instant.now();
             }
             scheduler = Executors.newSingleThreadScheduledExecutor();
-            scheduler.scheduleAtFixedRate(() -> {
+            scheduler.scheduleWithFixedDelay(() -> {
                 if (running) {
                     if (mockMode) {
                         onTimeUpdate.accept((int) elapsedTime);

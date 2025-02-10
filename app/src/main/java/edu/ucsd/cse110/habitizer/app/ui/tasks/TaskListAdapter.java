@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,10 @@ import java.util.*;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
 
-
-    public TaskListAdapter(Context context, List<Task> tasks) {
+    Routine taskRoutine;
+    public TaskListAdapter(Context context, List<Task> tasks, Routine r) {
         super(context, 0, new ArrayList<>(tasks));
+        taskRoutine = r;
     }
 
     @NonNull
@@ -48,6 +50,17 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
         binding.checkBox.setOnClickListener(v -> {
             task.checkOff();
+            if(task.getIsCheckedOff()) {
+                long previousElapsed = taskRoutine.routineTimer.oldElapsedTime;
+                long elapsedTime = taskRoutine.routineTimer.getElapsedTimeInSeconds();
+
+                int timeBetween = (int)((elapsedTime - previousElapsed)/60) +  1;
+                // plus 1 determines round up
+
+                taskRoutine.routineTimer.oldElapsedTime = elapsedTime;
+                binding.taskTimestamp.setText("" + timeBetween + "m");
+            }else
+                binding.taskTimestamp.setText("Task Incomplete");
         });
 
         return binding.getRoot();

@@ -8,7 +8,6 @@ public class Task {
     private @NonNull String name;
     private @Nullable Integer id;
     private boolean isCheckedOff;
-    //private @Nullable int endTime;
     public Task(int id, String name) {
         this.id = id;
         this.name = name;
@@ -28,12 +27,7 @@ public class Task {
     }
 
     public void checkOff(){
-        this.isCheckedOff = true;
-        displayTime();
-    }
-
-    public void displayTime(){
-        // this.endTime =
+        this.isCheckedOff = !isCheckedOff;
     }
 
 

@@ -21,6 +21,8 @@ public class Routine {
     private Instant routineStartTime;
     private Instant taskStartTime;
 
+    public RoutineTimer routineTimer;
+
     public Routine(int id, String name) {
         this.id = id;
         this.name = name;
@@ -32,11 +34,6 @@ public class Routine {
         isStarted = true;
         routineStartTime = now;
         taskStartTime = now;
-    }
-
-    public void checkOffTask(Instant now, int id) {
-        taskStartTime = now;
-        // Once task class is set up, make sure to complete this method
     }
 
     public void setGoalTime(int timeInMinutes) {
