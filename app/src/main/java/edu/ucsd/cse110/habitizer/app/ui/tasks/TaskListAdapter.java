@@ -46,6 +46,9 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
         binding.taskName.setText(task.getName());
 
+        binding.checkBox.setOnClickListener(v -> {
+            task.checkOff();
+        });
 
         return binding.getRoot();
     }
