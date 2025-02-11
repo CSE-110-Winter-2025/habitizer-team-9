@@ -85,7 +85,8 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             routineCompleted = true;
             taskRoutine.routineTimer.stop();
             long totalTime = taskRoutine.routineTimer.getElapsedTimeInSeconds();
-            String message = "All tasks completed. Total time taken: " + (totalTime / 60) + "m";
+            // plus one for round up
+            String message = "All tasks completed. Total time taken: " + (totalTime / 60 + 1) + "m";
             notifyCompletion(message);
         }
     }
