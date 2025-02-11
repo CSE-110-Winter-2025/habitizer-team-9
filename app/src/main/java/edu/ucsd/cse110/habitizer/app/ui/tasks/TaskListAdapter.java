@@ -25,7 +25,7 @@ import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import java.util.*;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
-
+    private boolean routineCompleted = false;
     Routine taskRoutine;
     public TaskListAdapter(Context context, List<Task> tasks, Routine r) {
         super(context, 0, new ArrayList<>(tasks));
@@ -47,8 +47,9 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         }
 
         binding.taskName.setText(task.getName());
-
+        binding.checkBox.setEnabled(!routineCompleted);
         binding.checkBox.setOnClickListener(v -> {
+            if(routineCompleted) return;
             task.checkOff();
             if(task.getIsCheckedOff()) {
                 long previousElapsed = taskRoutine.routineTimer.oldElapsedTime;
@@ -59,12 +60,50 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
                 taskRoutine.routineTimer.oldElapsedTime = elapsedTime;
                 binding.taskTimestamp.setText("" + timeBetween + "m");
-            }else
+            }else {
                 binding.taskTimestamp.setText("Task Incomplete");
+            }
+            checkAllTasksCompleted();
         });
 
         return binding.getRoot();
     }
 
+    private void checkAllTasksCompleted(){
+        if(routineCompleted) return;
+        boolean allChecked = true;
+        for (int i = 0; i < getCount(); i++) {
+            Task task = getItem(i);
+            if (task != null && !task.getIsCheckedOff()) {
+                allChecked = false;
+                break;
+            }
+        }
+
+        if(allChecked){
+            routineCompleted = true;
+            taskRoutine.routineTimer.stop();
+            long totalTime = taskRoutine.routineTimer.getElapsedTimeInSeconds();
+            String message = "All tasks completed. Total time taken: " + (totalTime / 60) + "m";
+            notifyCompletion(message);
+        }
+    }
+
+    private void notifyCompletion(String message){
+        if (completionListener != null){
+            completionListener.onRoutineCompleted(message);
+        }
+    }
+
+    // Interface to communicate with TaskListFragment
+    public interface CompletionListener {
+        void onRoutineCompleted(String message);
+    }
+
+    private CompletionListener completionListener;
+
+    public void setCompletionListener(CompletionListener listener) {
+        this.completionListener = listener;
+    }
 
 }

@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.habitizer.app.ui.tasks;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,8 +116,24 @@ public class TaskListFragment extends Fragment {
         //IMPLEMENT WHEN TASK IS IMPLEMENTED <<
         view.taskList.setAdapter(adapter);
 
+        // Set up completion listener
+        adapter.setCompletionListener(message -> requireActivity().runOnUiThread(() -> {
+            showCompletionDialog(message);
+        }));
+
+
+
         return view.getRoot();
     }
+
+    private void showCompletionDialog(String message) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Routine Completed")
+                .setMessage(message)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
 
     @Override
     public void onDestroyView() {
