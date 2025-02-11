@@ -126,6 +126,7 @@ public class TaskListFragment extends Fragment {
         return view.getRoot();
     }
 
+    // Dialog after completing all tasks
     private void showCompletionDialog(String message) {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Routine Completed")

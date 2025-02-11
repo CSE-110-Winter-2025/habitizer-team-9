@@ -69,6 +69,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         return binding.getRoot();
     }
 
+    // Method iterating all tasks to check for completion
     private void checkAllTasksCompleted(){
         if(routineCompleted) return;
         boolean allChecked = true;
