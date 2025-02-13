@@ -2,6 +2,7 @@ package edu.ucsd.cse110.habitizer.app;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
@@ -53,5 +54,6 @@ public class MainViewModel extends ViewModel {
     public Subject<List<Routine>> getRoutines() {return routines;}
 
     public List<Routine> getListRoutines() {return routines.getValue();}
+
 
 }

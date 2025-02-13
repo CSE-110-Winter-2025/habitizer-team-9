@@ -8,22 +8,37 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogRenameTaskBinding;
+import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class RenameTaskDialogFragment extends DialogFragment {
 
     private FragmentDialogRenameTaskBinding view;
+    private MainViewModel activityModel;
+    private Task currentTask;
 
-    public RenameTaskDialogFragment() {
-        // Required empty public constructor
+    public RenameTaskDialogFragment(Task currentTask) {
+        this.currentTask = currentTask;
     }
 
-    public static RenameTaskDialogFragment newInstance() {
-        var fragment = new RenameTaskDialogFragment();
+    public static RenameTaskDialogFragment newInstance(Task task) {
+        var fragment = new RenameTaskDialogFragment(task);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        var modelOwner = requireActivity();
+        var modelFactory = ViewModelProvider.Factory.from(MainViewModel.initializer);
+        var modelProvider = new ViewModelProvider(modelOwner, modelFactory);
+        this.activityModel = modelProvider.get(MainViewModel.class);
     }
 
     @NonNull
@@ -41,6 +56,8 @@ public class RenameTaskDialogFragment extends DialogFragment {
     }
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
+        var newTaskName = view.taskNameEditText.getText().toString();
+        currentTask.rename(newTaskName);
         dialog.dismiss();
     }
 
