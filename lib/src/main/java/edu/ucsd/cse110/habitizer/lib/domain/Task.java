@@ -30,5 +30,7 @@ public class Task {
         this.isCheckedOff = !isCheckedOff;
     }
 
-
+    public void rename(@NonNull String newName) {
+        this.name = newName;
+    }
 }
