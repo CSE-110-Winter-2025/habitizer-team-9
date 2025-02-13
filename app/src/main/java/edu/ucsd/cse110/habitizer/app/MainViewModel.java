@@ -55,5 +55,9 @@ public class MainViewModel extends ViewModel {
 
     public List<Routine> getListRoutines() {return routines.getValue();}
 
+    public void addTask(Routine routine, Task task)
+    {
+        routineRepository.addTask(routine, task);
+    }
 
 }
