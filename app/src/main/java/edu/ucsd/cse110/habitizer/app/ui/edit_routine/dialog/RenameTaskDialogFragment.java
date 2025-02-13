@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogRenameTaskBinding;
+import edu.ucsd.cse110.habitizer.app.ui.edit_routine.EditRoutineAdapter;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class RenameTaskDialogFragment extends DialogFragment {
@@ -19,13 +20,15 @@ public class RenameTaskDialogFragment extends DialogFragment {
     private FragmentDialogRenameTaskBinding view;
     private MainViewModel activityModel;
     private Task currentTask;
+    private EditRoutineAdapter adapter;
 
-    public RenameTaskDialogFragment(Task currentTask) {
+    public RenameTaskDialogFragment(Task currentTask, EditRoutineAdapter adapter) {
         this.currentTask = currentTask;
+        this.adapter = adapter;
     }
 
-    public static RenameTaskDialogFragment newInstance(Task task) {
-        var fragment = new RenameTaskDialogFragment(task);
+    public static RenameTaskDialogFragment newInstance(Task task, EditRoutineAdapter parentAdapter) {
+        var fragment = new RenameTaskDialogFragment(task, parentAdapter);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -58,6 +61,7 @@ public class RenameTaskDialogFragment extends DialogFragment {
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
         var newTaskName = view.taskNameEditText.getText().toString();
         currentTask.rename(newTaskName);
+        adapter.notifyDataSetChanged();
         dialog.dismiss();
     }
 

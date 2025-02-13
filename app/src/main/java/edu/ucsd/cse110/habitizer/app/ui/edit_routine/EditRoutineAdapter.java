@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.ui.edit_routine;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,9 +45,10 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
         }
 
         binding.taskName.setText(task.getName());
+
         // Implement Edit Button
         binding.taskRenameButton.setOnClickListener(v -> {
-            var dialogFragment = RenameTaskDialogFragment.newInstance(task);
+            var dialogFragment = RenameTaskDialogFragment.newInstance(task, this);
             dialogFragment.show(fragment.getParentFragmentManager(), "RenameTaskDialogFragment");
         });
 
