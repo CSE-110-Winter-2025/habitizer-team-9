@@ -40,12 +40,8 @@ public class RoutineTimer {
         }
     }
 
-
     public void stop() {
         running = false;
-        if (scheduler != null) {
-            scheduler.shutdown();
-        }
     }
 
     public void reset() {
@@ -62,6 +58,7 @@ public class RoutineTimer {
     public void disableMockMode() {
         if (mockMode) {
             mockMode = false;
+            start(); // Restart real-time tracking
             if (startTime == null) {
                 startTime = Instant.now();
             }
