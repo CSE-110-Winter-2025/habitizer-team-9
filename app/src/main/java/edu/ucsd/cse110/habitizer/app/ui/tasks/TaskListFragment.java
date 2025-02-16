@@ -2,6 +2,7 @@ package edu.ucsd.cse110.habitizer.app.ui.tasks;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +61,17 @@ public class TaskListFragment extends Fragment {
         routineTimer = new RoutineTimer(secondsElapsed -> {
             if (timerTextView != null) {
                 int minutes = secondsElapsed / 60; // Convert seconds to minutes
+                String output = String.valueOf(minutes) + " m / ";
+                if(routine.getGoalTime() != 0){
+                    output = output + routine.getGoalTime() + " m";
+                }else{
+                    output = output +  "-";
+                }
+
+                final String finalOutput = output;
                 requireActivity().runOnUiThread(() ->
-                        timerTextView.setText(String.valueOf(minutes) + "m") // Display minutes
+
+                        timerTextView.setText(finalOutput) // Display minutes
                 );
             }
         });
