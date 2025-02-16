@@ -97,7 +97,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         }
     }
 
-    // Interface to communicate with TaskListFragment
     public interface CompletionListener {
         void onRoutineCompleted(String message);
     }
