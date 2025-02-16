@@ -163,6 +163,7 @@ public class TaskListFragment extends Fragment {
 
         // Disable the button
         endRoutineButton.setEnabled(false);
+        endRoutineButton.setText("Routine Ended");
 
         // Grey out the button
         endRoutineButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), android.R.color.darker_gray));
