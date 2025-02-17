@@ -22,8 +22,10 @@ public class RoutineTimerTest extends TestCase {
         timer.enableMockMode();
         timer.advanceMockTime(120); // Advance 2 minutes in mock mode
         timer.disableMockMode(); // Exit mock mode
+        System.out.println("Elapsed minutes after disabling mock mode: " + timer.getElapsedMinutes());
         assertEquals(2, timer.getElapsedMinutes()); // Mock time should be retained after switching to real time
     }
+
 
 
     public void testAdvanceMockTimeWithoutEnablingThrowsException() {
@@ -51,13 +53,14 @@ public class RoutineTimerTest extends TestCase {
         System.out.println("Switching to real time...");
         timer.disableMockMode(); // Switch back to real time
         timer.start(); // Start real-time tracking
-        Thread.sleep(2000); // Wait for 2 seconds in real time
+        Thread.sleep(5000); // Wait for 5 seconds instead of 2 seconds
         timer.stop();
 
         int elapsedMinutes = timer.getElapsedMinutes();
         System.out.println("Elapsed minutes after switching to real time: " + elapsedMinutes);
         assertTrue(elapsedMinutes >= 2); // Ensure mock time is retained
     }
+
 
 
 
