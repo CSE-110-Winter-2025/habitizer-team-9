@@ -83,6 +83,10 @@ public class TaskListFragment extends Fragment {
             adapter.clear();
             assert map != null;
             assert routine != null;
+            for(Task task : map.get(routine)){
+                if(task.getIsCheckedOff())
+                    task.checkOff();
+            }
             adapter.addAll(new ArrayList<Task>(map.get(routine)));
             adapter.notifyDataSetChanged();
         });
