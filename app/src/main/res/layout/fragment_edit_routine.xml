@@ -41,7 +41,6 @@
         app:layout_constraintHorizontal_bias="0.745"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/routineName" />
-
     <LinearLayout
         android:id="@+id/buttonLayout"
         android:layout_width="0dp"

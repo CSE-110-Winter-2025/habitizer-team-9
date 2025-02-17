@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -3,6 +3,7 @@ package edu.ucsd.cse110.habitizer.app.ui.edit_routine;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class EditRoutineFragment extends Fragment {
         });
 
     }
+  
     private void updateGoalTimeDisplay(long newGoalTime) {
         String goalTimeText = "Goal Time: " + (newGoalTime == 0 ? "-" : newGoalTime + " m");
         view.goalTimePreview.setText(goalTimeText);
@@ -83,7 +85,8 @@ public class EditRoutineFragment extends Fragment {
         // Implement add task
         view.addTaskButton.setOnClickListener(v -> {
             var dialogFragment = AddTaskDialogFragment.newInstance(routine);
-            dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+
+            dialogFragment.show(getParentFragmentManager(), "AddTaskDialogFragment");
         });
 
         view.changeGoalTime.setOnClickListener(v -> {
@@ -93,6 +96,7 @@ public class EditRoutineFragment extends Fragment {
                 updateGoalTimeDisplay(newGoalTime);
             });
             dialogFragment.show(getParentFragmentManager(), "ChangeGoalTimeDialogFragment");
+
         });
 
         return view.getRoot();
