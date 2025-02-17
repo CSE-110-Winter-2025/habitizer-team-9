@@ -17,7 +17,7 @@ public class Routine {
 
     private boolean isStarted;
 
-    private Duration goalTime;
+    private long goalTime;
     private Instant routineStartTime;
     private Instant taskStartTime;
 
@@ -27,7 +27,7 @@ public class Routine {
         this.id = id;
         this.name = name;
         isStarted = false;
-        goalTime = Duration.ofSeconds(0);
+        goalTime = 0;
     }
 
     public void startRoutine(Instant now) {
@@ -36,10 +36,6 @@ public class Routine {
         taskStartTime = now;
     }
 
-    public void setGoalTime(int timeInMinutes) {
-        int seconds = timeInMinutes * 60;
-        goalTime = Duration.ofSeconds(seconds);
-    }
 
     public String getName() {
         return name;
@@ -69,11 +65,11 @@ public class Routine {
         this.taskStartTime = instant;
     }
 
-    public Duration getGoalTime() {
+    public long getGoalTime() {
         return goalTime;
     }
 
-    public void setGoalTime(Duration goalTime) {
+    public void setGoalTime(long goalTime) {
         this.goalTime = goalTime;
     }
 

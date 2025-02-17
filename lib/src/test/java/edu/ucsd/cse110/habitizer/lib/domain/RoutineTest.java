@@ -20,8 +20,8 @@ public class RoutineTest extends TestCase {
 
     public void testSetGoalTime() {
         var routine = new Routine(1, "Morning Routine");
-        routine.setGoalTime(2);
-        Duration goalTime = Duration.ofSeconds(120);
+        routine.setGoalTime(2L);
+        long goalTime = 2;
         assertThat(routine.getGoalTime(), is(goalTime));
     }
 
