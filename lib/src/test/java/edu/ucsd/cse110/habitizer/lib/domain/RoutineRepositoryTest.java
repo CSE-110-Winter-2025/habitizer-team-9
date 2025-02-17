@@ -78,4 +78,17 @@ public class RoutineRepositoryTest extends TestCase {
         assertEquals(morning, dataSource.getRoutine(0));
         assertEquals(evening, dataSource.getRoutine(1));
     }
+
+    public void testAddTask() {
+        InMemoryDataSource dataSource = new InMemoryDataSource();
+        RoutineRepository repository = new RoutineRepository(dataSource);
+        Task task = new Task(0, "Wash Face");
+        Task expectedTask = new Task(0, "Wash Face");
+        Routine routine = new Routine(0, "Morning Routine");
+        repository.save(routine);
+
+        repository.addTask(routine, task);
+        assertEquals(dataSource.getTasks(routine).size(), 1);
+        assertEquals(dataSource.getTasks(routine).get(0), expectedTask);
+    }
 }
