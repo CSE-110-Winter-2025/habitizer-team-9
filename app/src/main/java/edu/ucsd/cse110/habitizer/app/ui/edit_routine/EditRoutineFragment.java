@@ -2,6 +2,7 @@ package edu.ucsd.cse110.habitizer.app.ui.edit_routine;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.R;
 import edu.ucsd.cse110.habitizer.app.databinding.ListItemEditRoutineBinding;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.AddTaskDialogFragment;
+import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.ChangeGoalTimeDialogFragment;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.RenameTaskDialogFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
@@ -60,6 +62,10 @@ public class EditRoutineFragment extends Fragment {
         });
 
     }
+    private void updateGoalTimeDisplay(long newGoalTime) {
+        String goalTimeText = "Goal Time: " + (newGoalTime == 0 ? "-" : newGoalTime + " m");
+        view.goalTimePreview.setText(goalTimeText);
+    }
 
     @Override
     public View onCreateView(
@@ -71,11 +77,22 @@ public class EditRoutineFragment extends Fragment {
 
         view.routineName.setText(routine.getName());
         view.taskList.setAdapter(adapter);
+        String goalTimeText = "Goal Time: " + (routine.getGoalTime() == 0 ? "-" : routine.getGoalTime() + " m");
+        view.goalTimePreview.setText(goalTimeText);
 
         // Implement add task
         view.addTaskButton.setOnClickListener(v -> {
             var dialogFragment = AddTaskDialogFragment.newInstance(routine);
             dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+        });
+
+        view.changeGoalTime.setOnClickListener(v -> {
+            var dialogFragment = ChangeGoalTimeDialogFragment.newInstance(routine);
+            dialogFragment.setOnGoalTimeUpdatedListener(newGoalTime -> {
+                routine.setGoalTime(newGoalTime);
+                updateGoalTimeDisplay(newGoalTime);
+            });
+            dialogFragment.show(getParentFragmentManager(), "ChangeGoalTimeDialogFragment");
         });
 
         return view.getRoot();
