@@ -155,9 +155,15 @@ public class TaskListFragment extends Fragment {
                 .setMessage(message)
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                 .show();
+
+        // Disable the "End Routine" button when routine ends automatically
+        Button endRoutineButton = view.endRoutineButton;
+        if (endRoutineButton != null) {
+            endRoutineButton.setEnabled(false);
+            endRoutineButton.setText("Routine Ended");
+            endRoutineButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), android.R.color.darker_gray));
+        }
     }
-
-
 
 
     @Override
