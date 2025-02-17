@@ -75,7 +75,7 @@ public class EditRoutineFragment extends Fragment {
         // Implement add task
         view.addTaskButton.setOnClickListener(v -> {
             var dialogFragment = AddTaskDialogFragment.newInstance(routine);
-            dialogFragment.show(getParentFragmentManager(), "RenameTaskDialogFragment");
+            dialogFragment.show(getParentFragmentManager(), "AddTaskDialogFragment");
         });
 
         return view.getRoot();

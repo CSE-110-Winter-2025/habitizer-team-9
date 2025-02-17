@@ -13,7 +13,6 @@ import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutinesBinding;
-import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class RoutinesFragment extends Fragment {
     private MainViewModel activityModel;
