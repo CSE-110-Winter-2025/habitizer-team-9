@@ -75,7 +75,6 @@ public class TaskListFragment extends Fragment {
             assert routine != null;
             adapter.addAll(new ArrayList<Task>(map.get(routine)));
             adapter.notifyDataSetChanged();
-
         });
     }
 

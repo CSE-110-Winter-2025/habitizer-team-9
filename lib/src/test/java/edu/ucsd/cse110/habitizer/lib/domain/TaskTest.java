@@ -17,4 +17,16 @@ public class TaskTest extends TestCase {
         assertThat(task.getName(), is(name));
         assertThat(task.getIsCheckedOff(), is(true));
     }
+
+    public void testRenameTask() {
+        int id = 0;
+        String oldName = "Shower";
+        String newName = "Wash Face";
+
+        Task task = new Task(id, oldName);
+        Task expectedTask = new Task(id, newName);
+        task.rename(newName);
+
+        assertEquals(task, expectedTask);
+    }
 }
