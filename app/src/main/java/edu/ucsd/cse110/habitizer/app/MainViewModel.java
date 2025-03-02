@@ -59,4 +59,9 @@ public class MainViewModel extends ViewModel {
         routineRepository.addTask(routine, task);
     }
 
+    public void addRoutine(Routine routine)
+    {
+        routineRepository.addRoutine(routine);
+    }
+
 }
