@@ -14,6 +14,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Room schema export location
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true"
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -46,11 +56,13 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(project(":lib"))
     implementation(project(":observables"))
-    implementation(project(":lib"))
-    implementation(project(":lib"))
+    
+    // Room dependencies
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
 
     testImplementation(libs.junit4)
-
+    
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.ext.espresso.core)
 }
