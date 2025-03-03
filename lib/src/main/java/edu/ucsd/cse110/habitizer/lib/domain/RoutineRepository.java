@@ -1,41 +1,22 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
-
-import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
-import edu.ucsd.cse110.observables.Subject;
-
 import java.util.List;
 import java.util.Map;
 
-public class RoutineRepository {
-    private final InMemoryDataSource dataSource;
+import edu.ucsd.cse110.observables.Subject;
 
-    public RoutineRepository(InMemoryDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+public interface RoutineRepository {
+    Subject<Routine> find(int id);
 
-    public Subject<Routine> find(int id){
-        return dataSource.getRoutineSubject(id);
-    }
+    Subject<List<Routine>> findAll();
 
-    public Subject<List<Routine>> findAll(){
-        return dataSource.getAllRoutinesSubject();
-    }
+    Subject<Map<Routine, List<Task>>> findAllMappings();
 
-    public Subject<Map<Routine, List<Task>>> findAllMappings(){
-        return dataSource.getMapSubject();
-    }
+    void save(Routine routine);
 
-    public void save(Routine routine){
-        dataSource.putRoutine(routine);
-    }
+    void save(List<Routine> routines);
 
-    public void save(List<Routine> routines){
-        dataSource.putRoutines(routines);
-    }
+    void addTask(Routine routine, Task task);
 
-    public void addTask(Routine routine, Task task)
-    {
-        dataSource.putTask(routine, task);
-    }
+    void updateTaskName(int taskId, String newName);
 }

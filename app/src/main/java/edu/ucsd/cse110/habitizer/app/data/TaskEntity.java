@@ -23,7 +23,7 @@ public class TaskEntity {
     public final int id;
 
     @NonNull
-    public final String name;
+    public String name;
 
     public final int routineId;
     
@@ -64,4 +64,9 @@ public class TaskEntity {
         }
         return task;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 } 

@@ -82,4 +82,11 @@ public class MainViewModel extends ViewModel {
         }
     }
 
+    public void updateTaskName(int taskId, String newName) {
+        routineRepository.updateTaskName(taskId, newName);
+
+        // Force refresh data to reflect the update in UI
+        refreshData();
+    }
+
 }

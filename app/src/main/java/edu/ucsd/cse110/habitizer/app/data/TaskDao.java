@@ -33,4 +33,7 @@ public interface TaskDao {
     
     @Query("SELECT MAX(id) FROM tasks")
     Integer getMaxTaskId();
+
+    @Query("UPDATE tasks SET name = :newName WHERE id = :taskId")
+    void updateTaskName(int taskId, String newName);
 } 

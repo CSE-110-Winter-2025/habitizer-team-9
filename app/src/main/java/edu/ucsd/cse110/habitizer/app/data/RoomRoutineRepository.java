@@ -9,11 +9,12 @@ import java.util.Map;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
+import edu.ucsd.cse110.habitizer.lib.domain.SimpleRoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 import edu.ucsd.cse110.observables.Subject;
 
-public class RoomRoutineRepository extends RoutineRepository {
+public class RoomRoutineRepository implements RoutineRepository {
     private static final String TAG = "RoomRoutineRepository";
     private final AppDatabase db;
     private final PlainMutableSubject<List<Routine>> allRoutinesSubject;
@@ -22,7 +23,7 @@ public class RoomRoutineRepository extends RoutineRepository {
     private final Map<Routine, PlainMutableSubject<List<Task>>> routineTaskSubjects;
     
     public RoomRoutineRepository(AppDatabase db) {
-        super(null); // We're not using the parent class's InMemoryDataSource
+//        super(null); // We're not using the parent class's InMemoryDataSource
         this.db = db;
         this.allRoutinesSubject = new PlainMutableSubject<>(new ArrayList<>());
         this.routineSubjects = new HashMap<>();
@@ -191,4 +192,27 @@ public class RoomRoutineRepository extends RoutineRepository {
             Log.e(TAG, "Error adding task: " + task.getName() + " to routine: " + routine.getName(), e);
         }
     }
+
+    @Override
+    public void updateTaskName(int taskId, String newName) {
+        try {
+            db.taskDao().updateTaskName(taskId, newName);
+            for (Map.Entry<Routine, PlainMutableSubject<List<Task>>> entry : routineTaskSubjects.entrySet()) {
+                List<Task> tasks = entry.getValue().getValue();
+                if (tasks != null) {
+                    for (Task task : tasks) {
+                        if (task.getId() != null && task.getId() == taskId) {
+                            task.rename(newName);
+                        }
+                    }
+                    entry.getValue().setValue(new ArrayList<>(tasks));
+                }
+            }
+
+            refreshData();
+        } catch (Exception e) {
+            Log.e(TAG, "Error updating task name: " + taskId, e);
+        }
+    }
+
 } 

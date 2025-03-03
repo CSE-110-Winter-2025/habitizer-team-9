@@ -77,6 +77,18 @@ public class Routine {
         return id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Routine routine = (Routine) o;
+        return id() == routine.id();
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id());
+    }
 
 
 }

@@ -56,8 +56,12 @@ public class EditRoutineFragment extends Fragment {
         this.adapter = new EditRoutineAdapter(requireContext(), List.of(), routine, this);
         activityModel.getMap().observe(map -> {
             adapter.clear();
-            assert map != null;
-            assert routine != null;
+            List<Task> tasks = map.get(routine);
+            if (tasks == null) {
+                tasks = new ArrayList<>();
+            }
+//            assert map != null;
+//            assert routine != null;
             adapter.addAll(new ArrayList<Task>(map.get(routine)));
             adapter.notifyDataSetChanged();
         });
