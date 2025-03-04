@@ -158,6 +158,7 @@ public class InMemoryDataSource {
             }
         }
 
+        routineTaskSubjects.get(routine).setValue(routineTaskMap.get(routine));
         allRoutineTasks.setValue(routineTaskMap);
 
     }
@@ -180,6 +181,7 @@ public class InMemoryDataSource {
             }
         }
 
+        routineTaskSubjects.get(routine).setValue(routineTaskMap.get(routine));
         allRoutineTasks.setValue(routineTaskMap);
     }
 

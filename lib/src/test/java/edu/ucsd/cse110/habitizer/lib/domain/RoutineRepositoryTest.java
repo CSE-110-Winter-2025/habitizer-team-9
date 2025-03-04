@@ -2,6 +2,7 @@ package edu.ucsd.cse110.habitizer.lib.domain;
 
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -105,5 +106,76 @@ public class RoutineRepositoryTest extends TestCase {
         assertEquals(dataSource.getRoutines().size(), 1);
         assertEquals(dataSource.getRoutines().get(0).id(), expectedId);
         assertEquals(dataSource.getRoutines().get(0).getName(), expectedName);
+    }
+
+    public void testMoveTaskUp(){
+        InMemoryDataSource dataSource = new InMemoryDataSource();
+        RoutineRepository repository = new RoutineRepository(dataSource);
+
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(new Task(0, "Wake Up"));
+        tasks.add(new Task(1, "Brush Teeth"));
+        tasks.add(new Task(2, "Wash Face"));
+
+        Routine routine = new Routine(0, "Morning Routine");
+        repository.save(routine);
+
+
+        Task expectedTask = new Task(0, "Wash Face");
+
+        repository.addTask(routine, tasks.get(0));
+        repository.addTask(routine, tasks.get(1));
+        repository.addTask(routine, tasks.get(2));
+
+        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).getFirst());
+
+        repository.moveTaskUp(routine, tasks.get(1));
+
+        assertEquals(new Task(1, "Brush Teeth"), dataSource.getTasks(routine).getFirst());
+        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).get(1));
+        assertEquals(new Task(2, "Wash Face"), dataSource.getTasks(routine).get(2));
+
+        // tasks.get(1) == new Task(1, "Brush Teeth")
+        repository.moveTaskUp(routine, tasks.get(1));
+
+        assertEquals(new Task(1, "Brush Teeth"), dataSource.getTasks(routine).get(2));
+        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).get(1));
+        assertEquals(new Task(2, "Wash Face"), dataSource.getTasks(routine).get(0));
+    }
+
+    public void testMoveTaskDown(){
+        InMemoryDataSource dataSource = new InMemoryDataSource();
+        RoutineRepository repository = new RoutineRepository(dataSource);
+
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(new Task(0, "Wake Up"));
+        tasks.add(new Task(1, "Brush Teeth"));
+        tasks.add(new Task(2, "Wash Face"));
+
+        Routine routine = new Routine(0, "Morning Routine");
+        repository.save(routine);
+
+
+        Task expectedTask = new Task(0, "Wash Face");
+
+        repository.addTask(routine, tasks.get(0));
+        repository.addTask(routine, tasks.get(1));
+        repository.addTask(routine, tasks.get(2));
+
+        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).getFirst());
+
+        repository.moveTaskDown(routine, tasks.get(1));
+
+        assertEquals(new Task(1, "Brush Teeth"), dataSource.getTasks(routine).get(2));
+        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).get(0));
+        assertEquals(new Task(2, "Wash Face"), dataSource.getTasks(routine).get(1));
+
+        // tasks.get(1) == new Task(1, "Brush Teeth")
+        repository.moveTaskDown(routine, tasks.get(1));
+
+
+        assertEquals(new Task(1, "Brush Teeth"), dataSource.getTasks(routine).get(0));
+        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).get(2));
+        assertEquals(new Task(2, "Wash Face"), dataSource.getTasks(routine).get(1));
     }
 }
