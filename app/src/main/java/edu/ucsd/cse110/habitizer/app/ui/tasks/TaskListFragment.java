@@ -29,12 +29,11 @@ import edu.ucsd.cse110.habitizer.app.ui.tasks.TaskListAdapter;
 public class TaskListFragment extends Fragment {
     private MainViewModel activityModel;
     private FragmentTasksBinding view;
-    private RoutineTimer routineTimer;
-    private TextView timerTextView;
     private ToggleButton mockModeToggle;
     private Button advanceTimeButton;
     private TaskListAdapter adapter;
 
+    private TextView timerTextView;
     private Routine routine;
 
     public TaskListFragment(Routine routine) {
@@ -58,7 +57,7 @@ public class TaskListFragment extends Fragment {
         this.activityModel = modelProvider.get(MainViewModel.class);
 
         // Initialize the timer
-        routineTimer = new RoutineTimer(secondsElapsed -> {
+        var routineTimer = new RoutineTimer(secondsElapsed -> {
             if (timerTextView != null) {
                 int minutes = secondsElapsed / 60; // Convert seconds to minutes
                 String output = String.valueOf(minutes) + " m / ";
@@ -76,7 +75,8 @@ public class TaskListFragment extends Fragment {
             }
         });
 
-        routine.routineTimer = this.routineTimer;
+        activityModel.setRoutineTimer(routineTimer);
+        routine.routineTimer = routineTimer;
 
         this.adapter = new TaskListAdapter(requireContext(), List.of(), routine);
         activityModel.getMap().observe(map -> {
@@ -97,7 +97,6 @@ public class TaskListFragment extends Fragment {
         this.view = FragmentTasksBinding.inflate(inflater, container, false);
 
         // Bind views
-        Button backButton = view.backButton;
         timerTextView = view.timerTextView;
         mockModeToggle = view.mockModeToggle;
         advanceTimeButton = view.advanceTimeButton;
@@ -109,32 +108,20 @@ public class TaskListFragment extends Fragment {
 
         // Toggle mock mode
         mockModeToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                routineTimer.enableMockMode(); // Enable mock mode
-                advanceTimeButton.setEnabled(true); // Enable advance time button
-            } else {
-                routineTimer.disableMockMode(); // Disable mock mode
-                advanceTimeButton.setEnabled(false); // Disable advance time button
-            }
+            advanceTimeButton.setEnabled(isChecked);
+            activityModel.toggleMockMode(isChecked);
         });
 
         // Advance time button
-        advanceTimeButton.setOnClickListener(v -> {
-            try {
-                routineTimer.advanceMockTime(30); // Advance time by 30 seconds
-            } catch (IllegalStateException e) {
-                timerTextView.setText("Enable Mock Mode First!");
-            }
-        });
+        advanceTimeButton.setOnClickListener(v -> activityModel.advanceMockTime());
 
         // Initially disable advance time button if mock mode is off
         advanceTimeButton.setEnabled(mockModeToggle.isChecked());
-        backButton.setOnClickListener(v -> goBackToHome());
-        endRoutineButton.setOnClickListener(v -> endRoutine(endRoutineButton));
+        endRoutineButton.setOnClickListener(v -> endRoutineView(endRoutineButton, activityModel.endRoutine(endRoutineButton)));
 
 
         // Start the timer
-        routineTimer.start();
+        activityModel.getRoutineTimer().start();
         //IMPLEMENT WHEN TASK IS IMPLEMENTED <<
         view.taskList.setAdapter(adapter);
 
@@ -165,21 +152,7 @@ public class TaskListFragment extends Fragment {
         }
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        routineTimer.stop(); // Stop the timer to prevent leaks
-        view = null;
-    }
-
-    private void endRoutine(Button endRoutineButton) {
-        routineTimer.stop();
-
-        // Calculate the total time
-        long totalTime = (long) Math.ceil(routineTimer.getElapsedTimeInSeconds() / 60.0);
-        String message = "Routine Ended. Total time taken: " + totalTime + "m";
-
+    public void endRoutineView(Button endRoutineButton, String message) {
         // Disable the button
         endRoutineButton.setEnabled(false);
         endRoutineButton.setText("Routine Ended");
@@ -191,17 +164,11 @@ public class TaskListFragment extends Fragment {
         showCompletionDialog(message);
     }
 
-    private void goBackToHome() {
-        if (routineTimer != null) {
-            routineTimer.stop(); // Stop the timer
-        }
 
-        // Navigate back to the home screen (RoutinesFragment)
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, new RoutinesFragment()) // Ensure this ID exists in activity_main.xml
-                .addToBackStack(null) // Allows user to navigate back
-                .commit();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        activityModel.getRoutineTimer().stop(); // Stop the timer to prevent leaks
+        view = null;
     }
-
 }
