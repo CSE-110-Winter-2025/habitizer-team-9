@@ -117,7 +117,7 @@ public class TaskListFragment extends Fragment {
 
         // Initially disable advance time button if mock mode is off
         advanceTimeButton.setEnabled(mockModeToggle.isChecked());
-        endRoutineButton.setOnClickListener(v -> endRoutineView(endRoutineButton, activityModel.endRoutine(endRoutineButton)));
+        endRoutineButton.setOnClickListener(v -> endRoutineView(endRoutineButton, activityModel.endRoutine()));
 
 
         // Start the timer

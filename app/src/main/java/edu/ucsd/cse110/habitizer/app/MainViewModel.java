@@ -60,13 +60,13 @@ public class MainViewModel extends ViewModel {
 
     public void toggleMockMode(boolean isChecked) {
         if (isChecked) {
-            routineTimer.enableMockMode(); // Enable mock mode
+            routineTimer.enableMockMode();
         } else {
-            routineTimer.disableMockMode(); // Disable mock mode
+            routineTimer.disableMockMode();
         }
     }
 
-    public String endRoutine(Button endRoutineButton) {
+    public String endRoutine() {
         getRoutineTimer().stop();
 
         // Calculate the total time
