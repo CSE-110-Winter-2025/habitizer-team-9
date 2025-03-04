@@ -1,14 +1,10 @@
 package edu.ucsd.cse110.habitizer.app;
 
 import static org.junit.Assert.assertEquals;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import junit.framework.TestCase;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +15,6 @@ import java.util.Map;
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
-
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineTimer;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
@@ -30,7 +25,7 @@ public class MainViewModelTest {
     private InMemoryDataSource dataSource;
 
     List<Routine> actualRoutines = List.of(
-            new Routine(0,"Morning Routine"),
+            new Routine(0, "Morning Routine"),
             new Routine(1, "Evening Routine"));
 
     List<Task> actualMorningTasks = List.of(
@@ -53,49 +48,11 @@ public class MainViewModelTest {
     );
 
     @Before
-    public void initialize(){
+    public void initialize() {
         dataSource = InMemoryDataSource.fromDefault();
         routineRepository = new RoutineRepository(dataSource);
         mainViewModel = new MainViewModel(routineRepository);
     }
-
-    @Test
-    public void testAdvanceMockTime() {
-        RoutineTimer routineTimer = new RoutineTimer(secondsElapsed -> {});
-        routineTimer.setIsMocking(true);
-        routineTimer.setElapsedTime(60);
-        mainViewModel.setRoutineTimer(routineTimer);
-        mainViewModel.advanceMockTime();
-        assertEquals(routineTimer.getElapsedTime(), 90);
-
-        routineTimer.setIsMocking(false);
-        routineTimer.setElapsedTime(60);
-        mainViewModel.setRoutineTimer(routineTimer);
-        mainViewModel.advanceMockTime();
-        assertEquals(routineTimer.getElapsedTime(), 60);
-    }
-
-    @Test
-    public void testEndRoutine() {
-        RoutineTimer routineTimer = new RoutineTimer(secondsElapsed -> {});
-        routineTimer.setIsMocking(true);
-        mainViewModel.setRoutineTimer(routineTimer);
-        mainViewModel.endRoutine();
-        assertFalse(routineTimer.getRunning());
-    }
-
-    @Test
-    public void testToggleMockMode() {
-        RoutineTimer routineTimer = new RoutineTimer(secondsElapsed -> {});
-        routineTimer.setIsMocking(true);
-        mainViewModel.setRoutineTimer(routineTimer);
-        mainViewModel.toggleMockMode(true);
-        assertTrue(routineTimer.getIsMocking());
-
-        routineTimer.setIsMocking(true);
-        mainViewModel.setRoutineTimer(routineTimer);
-        mainViewModel.toggleMockMode(false);
-        assertFalse(routineTimer.getIsMocking());
 
     @Test
     public void testInitialize() {
@@ -138,5 +95,45 @@ public class MainViewModelTest {
 
         List<Task> routineTasks = dataSource.getTasks(newRoutine);
         assertTrue(routineTasks.contains(newTask));
+    }
+
+    @Test
+    public void testEndRoutine() {
+        RoutineTimer routineTimer = new RoutineTimer(secondsElapsed -> {
+        });
+        routineTimer.setIsMocking(true);
+        mainViewModel.setRoutineTimer(routineTimer);
+        mainViewModel.endRoutine();
+        assertFalse(routineTimer.getRunning());
+    }
+
+    @Test
+    public void testToggleMockMode() {
+        RoutineTimer routineTimer = new RoutineTimer(secondsElapsed -> {});
+        routineTimer.setIsMocking(true);
+        mainViewModel.setRoutineTimer(routineTimer);
+        mainViewModel.toggleMockMode(true);
+        assertTrue(routineTimer.getIsMocking());
+
+        routineTimer.setIsMocking(true);
+        mainViewModel.setRoutineTimer(routineTimer);
+        mainViewModel.toggleMockMode(false);
+        assertFalse(routineTimer.getIsMocking());
+    }
+
+    @Test
+    public void testAdvanceMockTime() {
+        RoutineTimer routineTimer = new RoutineTimer(secondsElapsed -> {});
+        routineTimer.setIsMocking(true);
+        routineTimer.setElapsedTime(60);
+        mainViewModel.setRoutineTimer(routineTimer);
+        mainViewModel.advanceMockTime();
+        assertEquals(routineTimer.getElapsedTime(), 90);
+
+        routineTimer.setIsMocking(false);
+        routineTimer.setElapsedTime(60);
+        mainViewModel.setRoutineTimer(routineTimer);
+        mainViewModel.advanceMockTime();
+        assertEquals(routineTimer.getElapsedTime(), 60);
     }
 }
