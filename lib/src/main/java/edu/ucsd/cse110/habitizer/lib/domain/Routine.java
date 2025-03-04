@@ -33,6 +33,19 @@ public class Routine {
         goalTime = 0;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Routine routine = (Routine) o;
+        return id == routine.id && name.equals(routine.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
     public void startRoutine(Instant now) {
         isStarted = true;
         routineStartTime = now;
