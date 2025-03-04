@@ -20,8 +20,7 @@ public interface RoutineRepository {
 
     void updateTaskName(int taskId, String newName);
 
-    public void addRoutine(Routine routine)
-    {
-        dataSource.putRoutine(routine);
-    }
+    void addRoutine(Routine routine);
+
+    void renameRoutine(Routine routine, String newName);
 }

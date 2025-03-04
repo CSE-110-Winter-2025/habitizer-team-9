@@ -72,5 +72,18 @@ public class SimpleRoutineRepository implements RoutineRepository {
         }
     }
 
+    @Override
+    public void addRoutine(Routine routine)
+    {
+        dataSource.putRoutine(routine);
+    }
+
+    @Override
+    public void renameRoutine(Routine routine, String newName){
+        routine.rename(newName);
+    }
+
+
+
 
 }

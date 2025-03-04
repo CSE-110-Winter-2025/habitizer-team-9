@@ -17,11 +17,17 @@ public interface RoutineDao {
     RoutineEntity getById(int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(RoutineEntity routine);
+    long insert(RoutineEntity routine);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<RoutineEntity> routines);
 
     @Query("DELETE FROM routines WHERE id = :id")
     void delete(int id);
+
+    @Query("UPDATE routines SET name = :newName WHERE id = :id")
+    void updateRoutineName(int id, String newName);
+
+
+
 } 

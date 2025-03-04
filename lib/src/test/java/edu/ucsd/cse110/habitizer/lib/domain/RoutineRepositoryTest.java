@@ -95,7 +95,7 @@ public class RoutineRepositoryTest extends TestCase {
 
     public void testAddRoutine() {
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
 
         Routine routine = new Routine(0, "Morning Routine");
         Integer expectedId = 0;

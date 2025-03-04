@@ -215,4 +215,50 @@ public class RoomRoutineRepository implements RoutineRepository {
         }
     }
 
+    @Override
+    public void addRoutine(Routine routine) {
+        try {
+            // Insert into the database and get the generated ID
+            long routineId = db.routineDao().insert(RoutineEntity.fromDomain(routine));
+
+            // Create a new Routine object with the assigned ID
+            Routine newRoutine = new Routine((int) routineId, routine.getName());
+
+            // Update in-memory subjects
+            List<Routine> updatedRoutines = new ArrayList<>(allRoutinesSubject.getValue());
+            updatedRoutines.add(newRoutine);
+            allRoutinesSubject.setValue(updatedRoutines);
+
+            routineSubjects.put(newRoutine.id(), new PlainMutableSubject<>(newRoutine));
+
+            // Update the routine-task mapping
+            Map<Routine, List<Task>> currentMap = allRoutineTasksSubject.getValue();
+            currentMap.put(newRoutine, new ArrayList<>());
+            allRoutineTasksSubject.setValue(currentMap);
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error adding routine: " + routine.getName(), e);
+        }
+    }
+
+    @Override
+    public void renameRoutine(Routine routine, String newName) {
+        try {
+            // Update the routine in the database
+            db.routineDao().updateRoutineName(routine.id(), newName);
+            routine.rename(newName);
+
+            if (routineSubjects.containsKey(routine.id())) {
+                routineSubjects.get(routine.id()).setValue(routine);
+            }
+            refreshData();
+        } catch (Exception e) {
+            Log.e(TAG, "Error renaming routine: " + routine.getName(), e);
+        }
+    }
+
+
+
+
+
 } 

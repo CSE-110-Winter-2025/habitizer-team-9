@@ -94,4 +94,8 @@ public class MainViewModel extends ViewModel {
         routineRepository.addRoutine(routine);
     }
 
+    public void renameRoutine(Routine routine, String newName) {
+        routineRepository.renameRoutine(routine, newName);
+    }
+
 }
