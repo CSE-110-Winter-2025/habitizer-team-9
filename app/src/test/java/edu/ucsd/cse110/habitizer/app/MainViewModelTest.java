@@ -1,18 +1,25 @@
 package edu.ucsd.cse110.habitizer.app;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import junit.framework.TestCase;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
+
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineTimer;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
@@ -89,5 +96,47 @@ public class MainViewModelTest {
         mainViewModel.setRoutineTimer(routineTimer);
         mainViewModel.toggleMockMode(false);
         assertFalse(routineTimer.getIsMocking());
+
+    @Test
+    public void testInitialize() {
+        assertNotNull(mainViewModel.getRoutines().getValue());
+        assertNotNull(mainViewModel.getMap().getValue());
+    }
+
+    @Test
+    public void testGetMap() {
+        Map<Routine, List<Task>> actualMap = new HashMap<>();
+        actualMap.put(actualRoutines.get(0), actualMorningTasks);
+        actualMap.put(actualRoutines.get(1), actualEveningTasks);
+
+        Map<Routine, List<Task>> testMap = mainViewModel.getMap().getValue();
+
+        assertEquals(actualMap, testMap);
+    }
+
+    @Test
+    public void testGetRoutines() {
+        List<Routine> testRoutines = mainViewModel.getRoutines().getValue();
+
+        assertEquals(actualRoutines, testRoutines);
+    }
+
+    @Test
+    public void testGetListRoutines() {
+        List<Routine> testListRoutines = mainViewModel.getListRoutines();
+
+        assertEquals(actualRoutines, testListRoutines);
+    }
+
+    @Test
+    public void testAddTask() {
+        Routine newRoutine = new Routine(2, "Weekend Routine");
+        Task newTask = new Task(0, "Go to gym");
+
+        dataSource.putRoutine(newRoutine);
+        mainViewModel.addTask(newRoutine, newTask);
+
+        List<Task> routineTasks = dataSource.getTasks(newRoutine);
+        assertTrue(routineTasks.contains(newTask));
     }
 }
