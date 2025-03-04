@@ -140,6 +140,42 @@ public class InMemoryDataSource {
         allRoutinesSubject.setValue(getRoutines());
     }
 
+    public void moveTaskUp(Routine routine, Task task){
+        List<Task> tasks = routineTaskMap.get(routine);
+
+        for(int i = 0; i < tasks.size(); i++){
+            if(tasks.get(i) == task){
+                if(i == 0){
+                    Task top = tasks.get(0);
+                    tasks.set(0, tasks.get(tasks.size() - 1));
+                    tasks.set(tasks.size() - 1, top);
+                }else{
+                    Task top = tasks.get(i);
+                    tasks.set(i, tasks.get(i - 1));
+                    tasks.set(i - 1, top);
+                }
+            }
+        }
+    }
+
+    public void moveTaskDown(Routine routine, Task task){
+        List<Task> tasks = routineTaskMap.get(routine);
+
+        for(int i = 0; i < tasks.size(); i++){
+            if(tasks.get(i) == task){
+                if(i == tasks.size() - 1){
+                    Task bottom = tasks.get(tasks.size()-1);
+                    tasks.set(tasks.size() - 1, tasks.get(0));
+                    tasks.set(0, bottom);
+                }else{
+                    Task top = tasks.get(i);
+                    tasks.set(i, tasks.get(i + 1));
+                    tasks.set(i + 1, top);
+                }
+            }
+        }
+    }
+
     public void removeRoutine(int id){
         // NOT YET IMPLEMENTED
     }
