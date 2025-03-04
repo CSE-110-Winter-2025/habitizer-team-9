@@ -127,11 +127,11 @@ public class RoutineRepositoryTest extends TestCase {
         repository.addTask(routine, tasks.get(1));
         repository.addTask(routine, tasks.get(2));
 
-        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).getFirst());
+        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).get(0));
 
         repository.moveTaskUp(routine, tasks.get(1));
 
-        assertEquals(new Task(1, "Brush Teeth"), dataSource.getTasks(routine).getFirst());
+        assertEquals(new Task(1, "Brush Teeth"), dataSource.getTasks(routine).get(0));
         assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).get(1));
         assertEquals(new Task(2, "Wash Face"), dataSource.getTasks(routine).get(2));
 
@@ -162,7 +162,7 @@ public class RoutineRepositoryTest extends TestCase {
         repository.addTask(routine, tasks.get(1));
         repository.addTask(routine, tasks.get(2));
 
-        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).getFirst());
+        assertEquals(new Task(0, "Wake Up"), dataSource.getTasks(routine).get(0));
 
         repository.moveTaskDown(routine, tasks.get(1));
 
