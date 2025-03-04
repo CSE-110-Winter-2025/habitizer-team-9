@@ -22,6 +22,7 @@ import edu.ucsd.cse110.habitizer.app.R;
 import edu.ucsd.cse110.habitizer.app.databinding.ListItemEditRoutineBinding;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.AddTaskDialogFragment;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.ChangeGoalTimeDialogFragment;
+import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.RenameRoutineDialogFragment;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.RenameTaskDialogFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
@@ -87,6 +88,15 @@ public class EditRoutineFragment extends Fragment {
             var dialogFragment = AddTaskDialogFragment.newInstance(routine);
 
             dialogFragment.show(getParentFragmentManager(), "AddTaskDialogFragment");
+        });
+
+        // Rename Routine
+        view.routineName.setOnClickListener(v -> {
+            var dialogFragment = RenameRoutineDialogFragment.newInstance(routine);
+            dialogFragment.setRenameRoutineListener(newName -> {
+                view.routineName.setText(routine.getName());
+            });
+            dialogFragment.show(getParentFragmentManager(), "RenameRoutineDialogFragment");
         });
 
         view.changeGoalTime.setOnClickListener(v -> {

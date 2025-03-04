@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.observables.Subject;
@@ -90,5 +91,19 @@ public class RoutineRepositoryTest extends TestCase {
         repository.addTask(routine, task);
         assertEquals(dataSource.getTasks(routine).size(), 1);
         assertEquals(dataSource.getTasks(routine).get(0), expectedTask);
+    }
+
+    public void testAddRoutine() {
+        InMemoryDataSource dataSource = new InMemoryDataSource();
+        RoutineRepository repository = new RoutineRepository(dataSource);
+
+        Routine routine = new Routine(0, "Morning Routine");
+        Integer expectedId = 0;
+        String expectedName = "Morning Routine";
+
+        repository.addRoutine(routine);
+        assertEquals(dataSource.getRoutines().size(), 1);
+        assertEquals(dataSource.getRoutines().get(0).id(), expectedId);
+        assertEquals(dataSource.getRoutines().get(0).getName(), expectedName);
     }
 }
