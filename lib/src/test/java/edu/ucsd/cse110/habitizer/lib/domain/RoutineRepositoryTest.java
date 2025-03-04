@@ -4,6 +4,7 @@ import junit.framework.TestCase;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.observables.Subject;

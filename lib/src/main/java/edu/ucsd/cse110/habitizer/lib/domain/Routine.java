@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.time.Duration;
@@ -41,6 +42,11 @@ public class Routine {
 
     public String getName() {
         return name;
+    }
+
+    public void rename(@NonNull String newName)
+    {
+        this.name = newName;
     }
 
     public boolean getIsStarted() {
