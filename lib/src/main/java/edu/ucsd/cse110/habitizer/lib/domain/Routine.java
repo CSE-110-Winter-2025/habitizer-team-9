@@ -1,11 +1,13 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import edu.ucsd.cse110.observables.Subject;
 
@@ -23,6 +25,7 @@ public class Routine {
 
     public RoutineTimer routineTimer;
 
+
     public Routine(int id, String name) {
         this.id = id;
         this.name = name;
@@ -39,6 +42,11 @@ public class Routine {
 
     public String getName() {
         return name;
+    }
+
+    public void rename(@NonNull String newName)
+    {
+        this.name = newName;
     }
 
     public boolean getIsStarted() {

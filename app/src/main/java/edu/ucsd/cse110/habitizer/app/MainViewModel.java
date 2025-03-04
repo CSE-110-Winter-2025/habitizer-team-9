@@ -89,4 +89,9 @@ public class MainViewModel extends ViewModel {
         refreshData();
     }
 
+    public void addRoutine(Routine routine)
+    {
+        routineRepository.addRoutine(routine);
+    }
+
 }
