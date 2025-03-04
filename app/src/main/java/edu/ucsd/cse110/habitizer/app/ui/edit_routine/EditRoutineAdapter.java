@@ -52,6 +52,14 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
             dialogFragment.show(fragment.getParentFragmentManager(), "RenameTaskDialogFragment");
         });
 
+        binding.taskReorderDown.setOnClickListener(v -> {
+            ((EditRoutineFragment)fragment).activityModel.moveTaskDown(taskRoutine, task);
+        });
+
+        binding.taskReorderUp.setOnClickListener(v -> {
+            ((EditRoutineFragment)fragment).activityModel.moveTaskUp(taskRoutine, task);
+        });
+
         return binding.getRoot();
     }
 

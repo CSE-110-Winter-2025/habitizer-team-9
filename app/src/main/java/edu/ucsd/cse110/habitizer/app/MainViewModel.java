@@ -64,4 +64,16 @@ public class MainViewModel extends ViewModel {
         routineRepository.addRoutine(routine);
     }
 
+    public void moveTaskUp(Routine routine, Task task) {
+        Log.d("MVM", "Move Task Up");
+        routineRepository.moveTaskUp(routine, task);
+    }
+
+    public void moveTaskDown(Routine routine, Task task) {
+        Log.d("MVM", "Move Task Down");
+        routineRepository.moveTaskDown(routine, task);
+
+
+    }
+
 }

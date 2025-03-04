@@ -4,6 +4,7 @@ package edu.ucsd.cse110.habitizer.lib.domain;
 import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.observables.Subject;
 
+import java.awt.Dialog;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +42,9 @@ public class RoutineRepository {
 
     public void moveTaskUp(Routine routine, Task task) {dataSource.moveTaskUp(routine, task);}
 
-    public void moveTaskDown(Routine routine, Task task) {dataSource.moveTaskDown(routine, task);}
+    public void moveTaskDown(Routine routine, Task task) {
+        dataSource.moveTaskDown(routine, task);
+    }
 
     public void addRoutine(Routine routine)
     {

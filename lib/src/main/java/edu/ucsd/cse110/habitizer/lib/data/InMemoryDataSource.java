@@ -154,8 +154,12 @@ public class InMemoryDataSource {
                     tasks.set(i, tasks.get(i - 1));
                     tasks.set(i - 1, top);
                 }
+                break;
             }
         }
+
+        allRoutineTasks.setValue(routineTaskMap);
+
     }
 
     public void moveTaskDown(Routine routine, Task task){
@@ -172,8 +176,11 @@ public class InMemoryDataSource {
                     tasks.set(i, tasks.get(i + 1));
                     tasks.set(i + 1, top);
                 }
+                break;
             }
         }
+
+        allRoutineTasks.setValue(routineTaskMap);
     }
 
     public void removeRoutine(int id){
