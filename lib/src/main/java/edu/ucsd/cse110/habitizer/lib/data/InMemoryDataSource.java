@@ -79,11 +79,11 @@ public class InMemoryDataSource {
         return routineSubjects.get(id);
     }
 
-    public Subject<List<Routine>> getAllRoutinesSubject() { return allRoutinesSubject;}
+    public PlainMutableSubject<List<Routine>> getAllRoutinesSubject() { return allRoutinesSubject;}
 
-    public Subject<Map<Routine, List<Task>>> getMapSubject(){ return allRoutineTasks;}
+    public PlainMutableSubject<Map<Routine, List<Task>>> getMapSubject(){ return allRoutineTasks;}
 
-    public Subject<List<Task>> getTasksSubject(Routine routine){
+    public PlainMutableSubject<List<Task>> getTasksSubject(Routine routine){
         return routineTaskSubjects.get(routine);
     }
 
@@ -188,8 +188,4 @@ public class InMemoryDataSource {
     public void removeRoutine(int id){
         // NOT YET IMPLEMENTED
     }
-
-
-
-
 }
