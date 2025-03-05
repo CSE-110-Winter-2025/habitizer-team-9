@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.habitizer.app;
 
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
