@@ -56,12 +56,46 @@ public class MainViewModel extends ViewModel {
 
     public void addTask(Routine routine, Task task)
     {
-        routineRepository.addTask(routine, task);
+        try {
+            routineRepository.addTask(routine, task);
+            
+            // Wait a moment before refreshing data to avoid race conditions
+            // We don't need to force a refresh now since our repository handles it
+        } catch (Exception e) {
+            Log.e("MainViewModel", "Error adding task: " + e.getMessage());
+        }
+    }
+    
+    // Add this method to force refresh data
+    private void refreshData() {
+        // Get fresh data from repository
+        var freshRoutines = routineRepository.findAll().getValue();
+        var freshMap = routineRepository.findAllMappings().getValue();
+        
+        // Update our subjects with fresh data
+        if (freshRoutines != null) {
+            this.routines.setValue(freshRoutines);
+        }
+        
+        if (freshMap != null) {
+            this.routineTasks.setValue(freshMap);
+        }
+    }
+
+    public void updateTaskName(int taskId, String newName) {
+        routineRepository.updateTaskName(taskId, newName);
+
+        // Force refresh data to reflect the update in UI
+        refreshData();
     }
 
     public void addRoutine(Routine routine)
     {
         routineRepository.addRoutine(routine);
+    }
+
+    public void renameRoutine(Routine routine, String newName) {
+        routineRepository.renameRoutine(routine, newName);
     }
 
 }

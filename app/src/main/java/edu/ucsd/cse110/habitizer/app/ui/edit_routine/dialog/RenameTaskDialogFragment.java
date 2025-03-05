@@ -60,10 +60,13 @@ public class RenameTaskDialogFragment extends DialogFragment {
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
         var newTaskName = view.taskNameEditText.getText().toString();
-        currentTask.rename(newTaskName);
-        adapter.notifyDataSetChanged();
+        activityModel.updateTaskName(currentTask.getId(), newTaskName);
+//        currentTask.rename(newTaskName);
+//        adapter.notifyDataSetChanged();
         dialog.dismiss();
     }
+
+
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
         dialog.cancel();
