@@ -110,7 +110,7 @@ public class RoutineRepositoryTest extends TestCase {
 
     public void testMoveTaskUp(){
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
 
         List<Task> tasks = new ArrayList<>();
         tasks.add(new Task(0, "Wake Up"));
@@ -145,7 +145,7 @@ public class RoutineRepositoryTest extends TestCase {
 
     public void testMoveTaskDown(){
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
 
         List<Task> tasks = new ArrayList<>();
         tasks.add(new Task(0, "Wake Up"));
