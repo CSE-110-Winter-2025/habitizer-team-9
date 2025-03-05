@@ -139,12 +139,4 @@ public class InMemoryDataSource {
         });
         allRoutinesSubject.setValue(getRoutines());
     }
-
-    public void removeRoutine(int id){
-        // NOT YET IMPLEMENTED
-    }
-
-
-
-
 }

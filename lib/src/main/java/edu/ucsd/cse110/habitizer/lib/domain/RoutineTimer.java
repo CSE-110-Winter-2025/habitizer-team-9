@@ -68,9 +68,6 @@ public class RoutineTimer {
         }
     }
 
-
-
-
     public void advanceMockTime(int seconds) {
         if (!mockMode) {
             throw new IllegalStateException("Cannot advance time in real mode. Enable mock mode first.");
@@ -85,5 +82,25 @@ public class RoutineTimer {
 
     public long getElapsedTimeInSeconds() {
         return elapsedTime;
+    }
+
+    public boolean getIsMocking() {
+        return mockMode;
+    }
+
+    public void setIsMocking(boolean mock) {
+        mockMode = mock;
+    }
+
+    public long getElapsedTime() {
+        return elapsedTime;
+    }
+
+    public void setElapsedTime(long time) {
+        elapsedTime = time;
+    }
+
+    public boolean getRunning() {
+        return running;
     }
 }

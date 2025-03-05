@@ -1,8 +1,10 @@
 package edu.ucsd.cse110.habitizer.app;
 
 import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 
@@ -11,6 +13,7 @@ import java.util.Map;
 
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
+import edu.ucsd.cse110.habitizer.lib.domain.RoutineTimer;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import edu.ucsd.cse110.observables.PlainMutableSubject;
 import edu.ucsd.cse110.observables.Subject;
@@ -19,9 +22,11 @@ import static androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.APPLI
 
 public class MainViewModel extends ViewModel {
     private final RoutineRepository routineRepository;
+    private RoutineTimer routineTimer;
 
     private final PlainMutableSubject<List<Routine>> routines;
     private final PlainMutableSubject<Map<Routine, List<Task>>> routineTasks;
+
 
     public static final ViewModelInitializer<MainViewModel> initializer = new ViewModelInitializer<>(
             MainViewModel.class,
@@ -46,6 +51,28 @@ public class MainViewModel extends ViewModel {
            if(map == null) return;
            this.routineTasks.setValue(map);
         });
+    }
+
+    public void advanceMockTime() {
+        if(routineTimer.getIsMocking()) {
+            routineTimer.advanceMockTime(30);
+        }
+    }
+
+    public void toggleMockMode(boolean isChecked) {
+        if (isChecked) {
+            routineTimer.enableMockMode();
+        } else {
+            routineTimer.disableMockMode();
+        }
+    }
+
+    public String endRoutine() {
+        getRoutineTimer().stop();
+
+        // Calculate the total time
+        long totalTime = (long) Math.ceil(getRoutineTimer().getElapsedTimeInSeconds() / 60.0);
+        return "Routine Ended. Total time taken: " + totalTime + "m";
     }
 
     public Subject<Map<Routine, List<Task>>>  getMap() {return routineTasks;}
@@ -94,6 +121,14 @@ public class MainViewModel extends ViewModel {
         routineRepository.addRoutine(routine);
     }
 
+    public RoutineTimer getRoutineTimer() {
+        return routineTimer;
+    }
+
+    public void setRoutineTimer(RoutineTimer routineTimer) {
+        this.routineTimer = routineTimer;
+    }
+  
     public void renameRoutine(Routine routine, String newName) {
         routineRepository.renameRoutine(routine, newName);
     }
