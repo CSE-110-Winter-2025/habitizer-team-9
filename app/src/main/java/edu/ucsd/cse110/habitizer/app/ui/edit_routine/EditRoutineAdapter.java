@@ -3,6 +3,7 @@ package edu.ucsd.cse110.habitizer.app.ui.edit_routine;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
         });
 
         binding.taskReorderUp.setOnClickListener(v -> {
+            Log.d("Adapter", "Press is being noticed");
             ((EditRoutineFragment)fragment).activityModel.moveTaskUp(taskRoutine, task);
         });
 

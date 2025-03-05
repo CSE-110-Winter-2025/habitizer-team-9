@@ -123,7 +123,7 @@ public class MainViewModel extends ViewModel {
 
     public void moveTaskUp(Routine routine, Task task) {
         routineRepository.moveTaskUp(routine, task);
-      
+        Log.d("MVM", "Something is going on here!");
         refreshData();
     }
 
