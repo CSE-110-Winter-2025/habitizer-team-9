@@ -16,6 +16,7 @@ import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineTimer;
+import edu.ucsd.cse110.habitizer.lib.domain.SimpleRoutineRepository;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class MainViewModelTest {
@@ -50,7 +51,7 @@ public class MainViewModelTest {
     @Before
     public void initialize() {
         dataSource = InMemoryDataSource.fromDefault();
-        routineRepository = new RoutineRepository(dataSource);
+        routineRepository = new SimpleRoutineRepository(dataSource);
         mainViewModel = new MainViewModel(routineRepository);
     }
 

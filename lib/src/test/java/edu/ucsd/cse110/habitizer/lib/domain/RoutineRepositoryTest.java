@@ -15,7 +15,7 @@ public class RoutineRepositoryTest extends TestCase {
         InMemoryDataSource dataSource = new InMemoryDataSource();
         Routine routine = new Routine(0, "Morning Routine");
         dataSource.putRoutine(routine);
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
 
         Subject<Routine> routineSubject = repository.find(0);
 
@@ -30,7 +30,7 @@ public class RoutineRepositoryTest extends TestCase {
         Routine evening = new Routine(1, "Evening Routine");
         dataSource.putRoutine(morning);
         dataSource.putRoutine(evening);
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
 
         Subject<List<Routine>> allRoutinesSubject = repository.findAll();
         List<Routine> currentRoutines = allRoutinesSubject.getValue();
@@ -48,7 +48,7 @@ public class RoutineRepositoryTest extends TestCase {
 
         Task task = new Task(0, "Wake up");
         dataSource.putTask(routine, task);
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
 
         Subject<Map<Routine, List<Task>>> mapSubject = repository.findAllMappings();
         Map<Routine, List<Task>> routineTaskMap = mapSubject.getValue();
@@ -60,7 +60,7 @@ public class RoutineRepositoryTest extends TestCase {
 
     public void testSaveRoutine() {
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
         Routine routine = new Routine(0, "Morning Routine");
         repository.save(routine);
 
@@ -71,7 +71,7 @@ public class RoutineRepositoryTest extends TestCase {
 
     public void testTestSaveRoutineList() {
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
         Routine morning = new Routine(0, "Morning Routine");
         Routine evening = new Routine(1, "Evening Routine");
         repository.save(List.of(morning, evening));
@@ -82,7 +82,7 @@ public class RoutineRepositoryTest extends TestCase {
 
     public void testAddTask() {
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
         Task task = new Task(0, "Wash Face");
         Task expectedTask = new Task(0, "Wash Face");
         Routine routine = new Routine(0, "Morning Routine");
@@ -95,7 +95,7 @@ public class RoutineRepositoryTest extends TestCase {
 
     public void testAddRoutine() {
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
 
         Routine routine = new Routine(0, "Morning Routine");
         Integer expectedId = 0;

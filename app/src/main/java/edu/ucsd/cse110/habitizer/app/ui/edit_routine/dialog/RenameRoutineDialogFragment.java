@@ -69,6 +69,7 @@ public class RenameRoutineDialogFragment extends DialogFragment {
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
         var newName = view.renameRoutineText.getText().toString();
         routine.rename(newName);
+        activityModel.renameRoutine(routine, newName);
         if (listener != null) {
             listener.onRoutineRename(newName);
         }
