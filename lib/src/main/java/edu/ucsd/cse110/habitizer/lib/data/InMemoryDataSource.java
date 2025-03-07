@@ -79,11 +79,11 @@ public class InMemoryDataSource {
         return routineSubjects.get(id);
     }
 
-    public PlainMutableSubject<List<Routine>> getAllRoutinesSubject() { return allRoutinesSubject;}
+    public Subject<List<Routine>> getAllRoutinesSubject() { return allRoutinesSubject;}
 
-    public PlainMutableSubject<Map<Routine, List<Task>>> getMapSubject(){ return allRoutineTasks;}
+    public Subject<Map<Routine, List<Task>>> getMapSubject(){ return allRoutineTasks;}
 
-    public PlainMutableSubject<List<Task>> getTasksSubject(Routine routine){
+    public Subject<List<Task>> getTasksSubject(Routine routine){
         return routineTaskSubjects.get(routine);
     }
 
@@ -144,83 +144,7 @@ public class InMemoryDataSource {
         // NOT YET IMPLEMENTED
     }
 
-    /**
-     * Swaps the order of two tasks in a routine
-     * @param routine The routine containing the tasks
-     * @param fromPosition The original position of the task
-     * @param toPosition The new position for the task
-     */
-    public void swapTaskOrder(Routine routine, int fromPosition, int toPosition) {
-        if (!routineTaskMap.containsKey(routine)) {
-            return;
-        }
-        
-        List<Task> tasks = routineTaskMap.get(routine);
-        if (fromPosition < 0 || fromPosition >= tasks.size() || 
-            toPosition < 0 || toPosition >= tasks.size()) {
-            return;
-        }
-        
-        Task movingTask = tasks.get(fromPosition);
-        Integer movingTaskId = movingTask.getId();
-        
-        if (movingTaskId == null) {
-            throw new IllegalStateException("Task ID cannot be null when reordering tasks");
-        }
-        
-        List<Task> newTaskList = new ArrayList<>(tasks);
-        
-        newTaskList.remove(fromPosition);
-        newTaskList.add(toPosition, movingTask);
-        
-        routineTaskMap.put(routine, newTaskList);
-        
-        routineTaskSubjects.get(routine).setValue(new ArrayList<>(newTaskList));
-        
-        allRoutineTasks.setValue(new HashMap<>(routineTaskMap));
-    }
 
-    public void moveTaskUp(Routine routine, Task task){
-        List<Task> tasks = routineTaskMap.get(routine);
 
-        for(int i = 0; i < tasks.size(); i++){
-            if(tasks.get(i) == task){
-                if(i == 0){
-                    Task top = tasks.get(0);
-                    tasks.set(0, tasks.get(tasks.size() - 1));
-                    tasks.set(tasks.size() - 1, top);
-                }else{
-                    Task top = tasks.get(i);
-                    tasks.set(i, tasks.get(i - 1));
-                    tasks.set(i - 1, top);
-                }
-                break;
-            }
-        }
 
-        routineTaskSubjects.get(routine).setValue(routineTaskMap.get(routine));
-        allRoutineTasks.setValue(routineTaskMap);
-    }
-
-    public void moveTaskDown(Routine routine, Task task){
-        List<Task> tasks = routineTaskMap.get(routine);
-
-        for(int i = 0; i < tasks.size(); i++){
-            if(tasks.get(i) == task){
-                if(i == tasks.size() - 1){
-                    Task bottom = tasks.get(tasks.size()-1);
-                    tasks.set(tasks.size() - 1, tasks.get(0));
-                    tasks.set(0, bottom);
-                }else{
-                    Task top = tasks.get(i);
-                    tasks.set(i, tasks.get(i + 1));
-                    tasks.set(i + 1, top);
-                }
-                break;
-            }
-        }
-
-        routineTaskSubjects.get(routine).setValue(routineTaskMap.get(routine));
-        allRoutineTasks.setValue(routineTaskMap);
-    }
 }
