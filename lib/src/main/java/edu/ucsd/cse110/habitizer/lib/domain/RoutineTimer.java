@@ -15,6 +15,7 @@ public class RoutineTimer {
     private ScheduledExecutorService scheduler;
     private boolean running = false;
     private final Consumer<Integer> onTimeUpdate;
+    private boolean isPaused = true;
 
     public RoutineTimer(Consumer<Integer> onTimeUpdate) {
         this.onTimeUpdate = onTimeUpdate;
@@ -84,6 +85,14 @@ public class RoutineTimer {
         return elapsedTime;
     }
 
+    public void pauseRoutine() {
+        isPaused = true;
+    }
+
+    public void resumeRoutine() {
+        isPaused = false;
+    }
+
     public boolean getIsMocking() {
         return mockMode;
     }
@@ -102,5 +111,9 @@ public class RoutineTimer {
 
     public boolean getRunning() {
         return running;
+    }
+
+    public boolean getIsPaused() {
+        return isPaused;
     }
 }
