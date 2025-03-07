@@ -238,6 +238,120 @@ public class RoomRoutineRepository implements RoutineRepository {
     }
 
     @Override
+    public void swapTaskOrder(Routine routine, int fromPosition, int toPosition) {
+        try {
+            List<TaskEntity> taskEntities = db.taskDao().getTasksByRoutineId(routine.id());
+            
+            if (taskEntities == null || taskEntities.size() <= 1) {
+                return;
+            }
+            
+            if (fromPosition < 0 || fromPosition >= taskEntities.size() || 
+                toPosition < 0 || toPosition >= taskEntities.size()) {
+                return;
+            }
+            
+            TaskEntity fromTask = taskEntities.get(fromPosition);
+            TaskEntity toTask = taskEntities.get(toPosition);
+            
+            int tempOrderIndex = fromTask.orderIndex;
+            fromTask.orderIndex = toTask.orderIndex;
+            toTask.orderIndex = tempOrderIndex;
+            
+            db.taskDao().updateTaskOrderIndex(fromTask.id, fromTask.orderIndex);
+            db.taskDao().updateTaskOrderIndex(toTask.id, toTask.orderIndex);
+            
+            refreshData();
+        } catch (Exception e) {
+            Log.e(TAG, "Error swapping task order", e);
+        }
+    }
+
+    @Override
+    public void moveTaskUp(Routine routine, Task task){
+        try {
+            List<TaskEntity> taskEntities = db.taskDao().getTasksByRoutineId(routine.id());
+            
+            if (taskEntities == null || taskEntities.size() <= 1) {
+                return;
+            }
+            
+            List<TaskEntity> orderedTasks = new ArrayList<>(taskEntities);
+            
+            orderedTasks.sort((t1, t2) -> Integer.compare(t1.orderIndex, t2.orderIndex));
+            
+            int taskIndex = -1;
+            for (int i = 0; i < orderedTasks.size(); i++) {
+                if (orderedTasks.get(i).id == task.getId()) {
+                    taskIndex = i;
+                    break;
+                }
+            }
+            
+            if (taskIndex < 0) {
+                return;
+            }
+            
+            TaskEntity taskToMove = orderedTasks.remove(taskIndex);
+            
+            int newIndex = (taskIndex == 0) ? orderedTasks.size() : taskIndex - 1;
+            orderedTasks.add(newIndex, taskToMove);
+            
+            for (int i = 0; i < orderedTasks.size(); i++) {
+                TaskEntity t = orderedTasks.get(i);
+                t.orderIndex = i;
+                db.taskDao().updateTaskOrderIndex(t.id, i);
+            }
+            
+            refreshData();
+        } catch (Exception e) {
+            Log.e(TAG, "Error moving task up: " + task.getName() + " in routine: " + routine.getName(), e);
+        }
+    }
+
+    @Override
+    public void moveTaskDown(Routine routine, Task task){
+        try {
+            List<TaskEntity> taskEntities = db.taskDao().getTasksByRoutineId(routine.id());
+            
+            if (taskEntities == null || taskEntities.size() <= 1) {
+                return;
+            }
+            
+            List<TaskEntity> orderedTasks = new ArrayList<>(taskEntities);
+            
+            orderedTasks.sort((t1, t2) -> Integer.compare(t1.orderIndex, t2.orderIndex));
+            
+            int taskIndex = -1;
+            for (int i = 0; i < orderedTasks.size(); i++) {
+                if (orderedTasks.get(i).id == task.getId()) {
+                    taskIndex = i;
+                    break;
+                }
+            }
+            
+            if (taskIndex < 0) {
+                return;
+            }
+            
+            TaskEntity taskToMove = orderedTasks.remove(taskIndex);
+            
+            int newIndex = (taskIndex == orderedTasks.size()) ? 0 : taskIndex + 1;
+            orderedTasks.add(newIndex, taskToMove);
+            
+            for (int i = 0; i < orderedTasks.size(); i++) {
+                TaskEntity t = orderedTasks.get(i);
+                t.orderIndex = i;
+                db.taskDao().updateTaskOrderIndex(t.id, i);
+            }
+            
+            refreshData();
+        } catch (Exception e) {
+            Log.e(TAG, "Error moving task down: " + task.getName() + " in routine: " + routine.getName(), e);
+        }
+    }
+
+    @Override
     public void renameRoutine(Routine routine, String newName) {
         try {
             // Update the routine in the database
@@ -251,90 +365,6 @@ public class RoomRoutineRepository implements RoutineRepository {
         } catch (Exception e) {
             Log.e(TAG, "Error renaming routine: " + routine.getName(), e);
         }
-    }
-
-    @Override
-    public void moveTaskUp(Routine routine, Task task){
-        try {
-            // Get the next order index
-//            Integer maxOrderIndex = db.taskDao().getMaxOrderIndex(routine.id());
-//            int orderIndex = (maxOrderIndex == null) ? 0 : maxOrderIndex + 1;
-
-            // Get the highest task ID to ensure uniqueness
-//            Integer maxId = db.taskDao().getMaxTaskId();
-//            int taskId = (maxId == null) ? 0 : maxId + 1;
-
-            // Create a new task with the unique ID
-            // Task taskToSave = new Task(taskId, task.getName());
-//            if (task.getIsCheckedOff()) {
-//                taskToSave.checkOff();
-//            }
-
-            // Save task to database
-            // db.taskDao().insert(TaskEntity.fromDomain(taskToSave, routine.id(), orderIndex));
-
-            // Update in-memory collections without full refresh
-            // Get current tasks for this routine
-            List<TaskEntity> taskEntities = db.taskDao().getTasksByRoutineId(routine.id());
-
-            List<Task> tasks = new ArrayList<>();
-
-            for(int i = 0; i < taskEntities.size(); i++){
-                tasks.add(taskEntities.get(i).toDomain());
-                Log.d("RRR", tasks.get(i).getName());
-            }
-
-            for(int i = 1; i < tasks.size(); i++){
-                if(tasks.get(i).getName().equals(task.getName())){
-                    Log.d("RRR-1", tasks.get(i).getName());
-//                    if(i == 0){
-//                        Task top = tasks.get(0);
-//                        tasks.set(0, tasks.get(tasks.size() - 1));
-//                        tasks.set(tasks.size() - 1, top);
-//
-//                        TaskEntity topEntity = taskEntities.get(0);
-//                        taskEntities.set(0, taskEntities.get(taskEntities.size() - 1));
-//                        taskEntities.set(taskEntities.size() - 1, topEntity);
-//                    }else{
-                    Task top = tasks.get(i);
-                    tasks.set(i, tasks.get(i - 1));
-                    Log.d("RRR-2: i-1", tasks.get(i-1).getName());
-                    Log.d("RRR-2", tasks.get(i).getName());
-                    tasks.set(i - 1, top);
-                    Log.d("RRR-3", tasks.get(i-1).getName());
-
-                    TaskEntity topEntity = taskEntities.get(i);
-                    taskEntities.set(i, taskEntities.get(i - 1));
-                    taskEntities.set(i - 1, topEntity);
-//                    }
-
-                    break;
-                }
-            }
-
-            db.taskDao().insertAll(taskEntities);
-
-            // Update the subject
-
-            routineTaskSubjects.get(routine).setValue(tasks);
-            routineTaskSubjects.put(routine, new PlainMutableSubject<>(tasks));
-
-            // Update the map subject
-            Map<Routine, List<Task>> currentMap = allRoutineTasksSubject.getValue();
-            if (currentMap != null) {
-                currentMap.put(routine, tasks);
-                allRoutineTasksSubject.setValue(currentMap);
-            }
-
-
-        } catch (Exception e) {
-            Log.e(TAG, "Error moving task up: " + task.getName() + " in routine: " + routine.getName(), e);
-        }
-    }
-
-    @Override
-    public void moveTaskDown(Routine routine, Task task){
-
     }
 
 //    public void moveTaskUp(Routine routine, Task task){

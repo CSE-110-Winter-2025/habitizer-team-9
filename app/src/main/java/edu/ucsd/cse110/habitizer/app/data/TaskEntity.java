@@ -68,5 +68,8 @@ public class TaskEntity {
     public void setName(String name) {
         this.name = name;
     }
-
+    
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
 } 

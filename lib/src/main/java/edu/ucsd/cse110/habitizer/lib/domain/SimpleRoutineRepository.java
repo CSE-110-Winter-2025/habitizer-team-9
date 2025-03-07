@@ -79,6 +79,11 @@ public class SimpleRoutineRepository implements RoutineRepository {
     }
 
     @Override
+    public void swapTaskOrder(Routine routine, int fromPosition, int toPosition) {
+
+    }
+
+    @Override
     public void renameRoutine(Routine routine, String newName){
         routine.rename(newName);
     }
