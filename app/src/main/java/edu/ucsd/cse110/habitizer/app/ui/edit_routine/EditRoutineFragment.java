@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.habitizer.app.ui.edit_routine;
 
+import android.app.AlertDialog;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.AddTaskDialogFragmen
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.ChangeGoalTimeDialogFragment;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.RenameRoutineDialogFragment;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.RenameTaskDialogFragment;
+import edu.ucsd.cse110.habitizer.app.ui.routines.dialog.DeleteRoutineDialogFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentEditRoutineBinding;
@@ -87,14 +89,12 @@ public class EditRoutineFragment extends Fragment {
         String goalTimeText = "Goal Time: " + (routine.getGoalTime() == 0 ? "-" : routine.getGoalTime() + " m");
         view.goalTimePreview.setText(goalTimeText);
 
-        // Implement add task
         view.addTaskButton.setOnClickListener(v -> {
             var dialogFragment = AddTaskDialogFragment.newInstance(routine);
 
             dialogFragment.show(getParentFragmentManager(), "AddTaskDialogFragment");
         });
 
-        // Rename Routine
         view.routineName.setOnClickListener(v -> {
             var dialogFragment = RenameRoutineDialogFragment.newInstance(routine);
             dialogFragment.setRenameRoutineListener(newName -> {
@@ -112,6 +112,13 @@ public class EditRoutineFragment extends Fragment {
             dialogFragment.show(getParentFragmentManager(), "ChangeGoalTimeDialogFragment");
 
         });
+
+        view.deleteRoutineButton.setOnClickListener(v -> {
+            var dialogFragment = DeleteRoutineDialogFragment.newInstance(routine.id());
+            dialogFragment.show(getParentFragmentManager(), "DeleteRoutineDialogFragment");
+        });
+
+
 
         return view.getRoot();
     }

@@ -88,6 +88,7 @@ public class InMemoryDataSource {
     }
 
     public void putTask(Routine routine, Task task){
+
         routineTaskMap.get(routine).add(task);
 
         if (routineTaskMap.containsKey(routine)) {
@@ -140,9 +141,7 @@ public class InMemoryDataSource {
         allRoutinesSubject.setValue(getRoutines());
     }
 
-    public void removeRoutine(int id){
-        // NOT YET IMPLEMENTED
-    }
+
 
     /**
      * Swaps the order of two tasks in a routine
@@ -223,4 +222,33 @@ public class InMemoryDataSource {
         routineTaskSubjects.get(routine).setValue(routineTaskMap.get(routine));
         allRoutineTasks.setValue(routineTaskMap);
     }
+
+    public void deleteTask(int taskId) {
+        boolean removed = false;
+        for (Map.Entry<Routine, List<Task>> entry : routineTaskMap.entrySet()) {
+            List<Task> tasks = entry.getValue();
+            removed = tasks.removeIf(task -> task.getId() != null && task.getId() == taskId);
+            if (removed) {
+                routineTaskSubjects.get(entry.getKey()).setValue(new ArrayList<>(tasks));
+            }
+        }
+        if (removed) {
+            allRoutineTasks.setValue(routineTaskMap);
+        }
+    }
+
+    public void deleteRoutine(int id) {
+        Routine routineToRemove = routines.get(id);
+        if (routineToRemove == null) return;
+        routines.remove(id);
+        routineSubjects.remove(id);
+
+        routineTaskMap.remove(routineToRemove);
+
+        routineTaskSubjects.remove(routineToRemove);
+
+        allRoutinesSubject.setValue(new ArrayList<>(routines.values()));
+        allRoutineTasks.setValue(routineTaskMap);
+    }
+
 }

@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.habitizer.app.ui.edit_routine;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Message;
@@ -47,7 +48,6 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
 
         binding.taskName.setText(task.getName());
 
-        // Implement Edit Button
         binding.taskRenameButton.setOnClickListener(v -> {
             var dialogFragment = RenameTaskDialogFragment.newInstance(task, this);
             dialogFragment.show(fragment.getParentFragmentManager(), "RenameTaskDialogFragment");
@@ -62,7 +62,20 @@ public class EditRoutineAdapter extends ArrayAdapter<Task> {
             ((EditRoutineFragment)fragment).activityModel.moveTaskUp(taskRoutine, task);
         });
 
+        binding.taskDeleteButton.setOnClickListener(v -> {
+            new AlertDialog.Builder(fragment.getContext())
+                    .setTitle("Delete Task")
+                    .setMessage("Are you sure you want to delete this task?")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        ((EditRoutineFragment) fragment).activityModel.deleteTask(task.getId());
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
         return binding.getRoot();
     }
+
+
 
 }

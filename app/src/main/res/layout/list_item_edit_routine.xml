@@ -34,17 +34,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/taskReorderDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.523"
-        app:srcCompat="@drawable/task_down" />
-
-    <ImageButton
         android:id="@+id/taskReorderUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,5 +43,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.523"
         app:srcCompat="@drawable/task_up" />
+
+    <!-- Reorder Down Button -->
+    <ImageButton
+        android:id="@+id/taskReorderDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/task_delete_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.523"
+        app:srcCompat="@drawable/task_down" />
+
+    <!-- Delete Button (X) -->
+    <ImageButton
+        android:id="@+id/task_delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.523"
+        android:contentDescription="Delete Task"
+        app:srcCompat="@drawable/delete_icon" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
