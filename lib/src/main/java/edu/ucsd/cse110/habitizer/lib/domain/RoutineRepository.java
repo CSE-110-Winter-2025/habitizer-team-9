@@ -27,6 +27,16 @@ public interface RoutineRepository {
 
     void addRoutine(Routine routine);
 
+    /**
+     * Swaps the order of two tasks in a routine
+     * @param routine The routine containing the tasks
+     * @param fromPosition The original position of the task
+     * @param toPosition The new position for the task
+     * @throws IllegalArgumentException if positions are invalid or routine doesn't exist
+     * @throws IllegalStateException if a task has a null ID
+     */
+    void swapTaskOrder(Routine routine, int fromPosition, int toPosition);
+
     void moveTaskUp(Routine routine, Task task);
 
     void moveTaskDown(Routine routine, Task task);
