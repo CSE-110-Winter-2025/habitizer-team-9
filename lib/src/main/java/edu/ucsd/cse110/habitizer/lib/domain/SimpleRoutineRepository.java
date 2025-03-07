@@ -1,13 +1,13 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
 
-import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
-import edu.ucsd.cse110.observables.Subject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
+import edu.ucsd.cse110.observables.Subject;
 
 public class SimpleRoutineRepository implements RoutineRepository {
     private final InMemoryDataSource dataSource;
@@ -79,11 +79,24 @@ public class SimpleRoutineRepository implements RoutineRepository {
     }
 
     @Override
+    public void swapTaskOrder(Routine routine, int fromPosition, int toPosition) {
+        if (routine == null) {
+            throw new IllegalArgumentException("Routine cannot be null");
+        }
+        
+        dataSource.swapTaskOrder(routine, fromPosition, toPosition);
+    }
+
+    @Override
     public void renameRoutine(Routine routine, String newName){
         routine.rename(newName);
     }
 
+    @Override
+    public void moveTaskUp(Routine routine, Task task) {dataSource.moveTaskUp(routine, task);}
 
-
-
+    @Override
+    public void moveTaskDown(Routine routine, Task task) {
+        dataSource.moveTaskDown(routine, task);
+    }
 }

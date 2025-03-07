@@ -121,6 +121,18 @@ public class MainViewModel extends ViewModel {
         routineRepository.addRoutine(routine);
     }
 
+    public void moveTaskUp(Routine routine, Task task) {
+        routineRepository.moveTaskUp(routine, task);
+        Log.d("MVM", "Something is going on here!");
+        refreshData();
+    }
+
+    public void moveTaskDown(Routine routine, Task task) {
+        routineRepository.moveTaskDown(routine, task);
+      
+        refreshData();
+    }
+  
     public RoutineTimer getRoutineTimer() {
         return routineTimer;
     }

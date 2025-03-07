@@ -29,7 +29,7 @@ public class TaskEntity {
     
     public final boolean isCheckedOff;
     
-    public final int orderIndex;
+    public int orderIndex;
 
     public TaskEntity(int id, @NonNull String name, int routineId, boolean isCheckedOff, int orderIndex) {
         this.id = id;
@@ -68,5 +68,8 @@ public class TaskEntity {
     public void setName(String name) {
         this.name = name;
     }
-
+    
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
 } 

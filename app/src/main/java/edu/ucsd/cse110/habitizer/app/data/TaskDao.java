@@ -36,4 +36,7 @@ public interface TaskDao {
 
     @Query("UPDATE tasks SET name = :newName WHERE id = :taskId")
     void updateTaskName(int taskId, String newName);
+    
+    @Query("UPDATE tasks SET orderIndex = :orderIndex WHERE id = :taskId")
+    void updateTaskOrderIndex(int taskId, int orderIndex);
 } 

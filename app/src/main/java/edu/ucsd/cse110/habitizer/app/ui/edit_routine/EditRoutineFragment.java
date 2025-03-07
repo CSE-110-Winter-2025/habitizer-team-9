@@ -31,7 +31,7 @@ import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class EditRoutineFragment extends Fragment {
 
-    private MainViewModel activityModel;
+    public MainViewModel activityModel;
     private FragmentEditRoutineBinding view;
     private EditRoutineAdapter adapter;
     private Routine routine;
