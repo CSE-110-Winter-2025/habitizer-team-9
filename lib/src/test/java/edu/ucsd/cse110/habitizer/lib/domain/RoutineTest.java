@@ -20,13 +20,27 @@ public class RoutineTest extends TestCase {
 
     public void testSetGoalTime() {
         var routine = new Routine(1, "Morning Routine");
-        routine.setGoalTime(2);
-        Duration goalTime = Duration.ofSeconds(120);
+        routine.setGoalTime(2L);
+        long goalTime = 2;
         assertThat(routine.getGoalTime(), is(goalTime));
     }
 
     public void testId() {
         var routine = new Routine(1, "Morning Routine");
         assertThat(routine.id(), is(1));
+    }
+
+    public void testRenameRoutine() {
+        int id = 0;
+        String oldName = "Morning Routine";
+        String newName = "Weekend Routine";
+
+        Routine routine = new Routine(id, oldName);
+        Routine expectedRoutine = new Routine(id, newName);
+        routine.rename(newName);
+
+        assertEquals(routine.id(), expectedRoutine.id());
+        assertEquals(routine.getName(), expectedRoutine.getName());
+        assertEquals(routine.getGoalTime(), expectedRoutine.getGoalTime());
     }
 }

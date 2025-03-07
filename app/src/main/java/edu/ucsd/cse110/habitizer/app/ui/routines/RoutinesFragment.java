@@ -13,7 +13,7 @@ import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentRoutinesBinding;
-import edu.ucsd.cse110.habitizer.lib.domain.Routine;
+import edu.ucsd.cse110.habitizer.app.ui.routines.dialog.AddRoutineDialogFragment;
 
 public class RoutinesFragment extends Fragment {
     private MainViewModel activityModel;
@@ -53,6 +53,12 @@ public class RoutinesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = FragmentRoutinesBinding.inflate(inflater, container, false);
         view.routineList.setAdapter(adapter);
+
+        // Show AddRoutineDialogFragment
+        view.addRoutineButton.setOnClickListener(v -> {
+            var dialogFragment = AddRoutineDialogFragment.newInstance();
+            dialogFragment.show(getParentFragmentManager(), "AddRoutineDialogFragment");
+        });
 
         return view.getRoot();
     }

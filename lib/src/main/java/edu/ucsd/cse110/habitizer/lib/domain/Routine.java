@@ -1,11 +1,13 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import edu.ucsd.cse110.observables.Subject;
 
@@ -17,17 +19,31 @@ public class Routine {
 
     private boolean isStarted;
 
-    private Duration goalTime;
+    private long goalTime;
     private Instant routineStartTime;
     private Instant taskStartTime;
 
     public RoutineTimer routineTimer;
 
+
     public Routine(int id, String name) {
         this.id = id;
         this.name = name;
         isStarted = false;
-        goalTime = Duration.ofSeconds(0);
+        goalTime = 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Routine routine = (Routine) o;
+        return id == routine.id && name.equals(routine.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 
     public void startRoutine(Instant now) {
@@ -36,13 +52,14 @@ public class Routine {
         taskStartTime = now;
     }
 
-    public void setGoalTime(int timeInMinutes) {
-        int seconds = timeInMinutes * 60;
-        goalTime = Duration.ofSeconds(seconds);
-    }
 
     public String getName() {
         return name;
+    }
+
+    public void rename(@NonNull String newName)
+    {
+        this.name = newName;
     }
 
     public boolean getIsStarted() {
@@ -69,11 +86,11 @@ public class Routine {
         this.taskStartTime = instant;
     }
 
-    public Duration getGoalTime() {
+    public long getGoalTime() {
         return goalTime;
     }
 
-    public void setGoalTime(Duration goalTime) {
+    public void setGoalTime(long goalTime) {
         this.goalTime = goalTime;
     }
 
@@ -81,6 +98,18 @@ public class Routine {
         return id;
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Routine routine = (Routine) o;
+//        return id() == routine.id();
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Integer.hashCode(id());
+//    }
 
 
 }

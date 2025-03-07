@@ -11,24 +11,21 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogRenameTaskBinding;
-import edu.ucsd.cse110.habitizer.app.ui.edit_routine.EditRoutineAdapter;
+import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogAddTaskBinding;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
-public class RenameTaskDialogFragment extends DialogFragment {
+public class AddTaskDialogFragment extends DialogFragment {
 
-    private FragmentDialogRenameTaskBinding view;
+    private FragmentDialogAddTaskBinding view;
     private MainViewModel activityModel;
-    private Task currentTask;
-    private EditRoutineAdapter adapter;
-
-    public RenameTaskDialogFragment(Task currentTask, EditRoutineAdapter adapter) {
-        this.currentTask = currentTask;
-        this.adapter = adapter;
+    private Routine routine;
+    AddTaskDialogFragment(Routine routine) {
+        this.routine = routine;
     }
 
-    public static RenameTaskDialogFragment newInstance(Task task, EditRoutineAdapter parentAdapter) {
-        var fragment = new RenameTaskDialogFragment(task, parentAdapter);
+    public static AddTaskDialogFragment newInstance(Routine routine) {
+        var fragment = new AddTaskDialogFragment(routine);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -47,26 +44,24 @@ public class RenameTaskDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        this.view = FragmentDialogRenameTaskBinding.inflate(getLayoutInflater());
+        this.view = FragmentDialogAddTaskBinding.inflate(getLayoutInflater());
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle("Rename Task")
-                .setMessage("Please provide the new name of this task.")
+                .setTitle("Add Task")
+                .setMessage("Please provide the name of this new task.")
                 .setView(view.getRoot())
-                .setPositiveButton("Rename", this::onPositiveButtonClick)
+                .setPositiveButton("Add", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick)
                 .create();
     }
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
-        var newTaskName = view.taskNameEditText.getText().toString();
-        activityModel.updateTaskName(currentTask.getId(), newTaskName);
-//        currentTask.rename(newTaskName);
-//        adapter.notifyDataSetChanged();
+        var taskName = view.taskNameText.getText().toString();
+        var taskId = activityModel.getMap().getValue().get(routine).size();
+        var task = new Task(taskId, taskName);
+        activityModel.addTask(routine, task);
         dialog.dismiss();
     }
-
-
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
         dialog.cancel();

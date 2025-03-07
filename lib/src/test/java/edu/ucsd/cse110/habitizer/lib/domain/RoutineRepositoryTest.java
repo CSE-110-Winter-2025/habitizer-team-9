@@ -1,75 +1,6 @@
-package edu.ucsd.cse110.habitizer.lib.domain;
-
-import java.util.List;
-import java.util.Map;
-
-import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
-import edu.ucsd.cse110.observables.Subject;
-import junit.framework.TestCase;
-
-public class RoutineRepositoryTest extends TestCase {
-
-    public void testFind() {
-        InMemoryDataSource dataSource = new InMemoryDataSource();
-        Routine routine = new Routine(0, "Morning Routine");
-        dataSource.putRoutine(routine);
-        RoutineRepository repository = new RoutineRepository(dataSource);
-
-        Subject<Routine> routineSubject = repository.find(0);
-
-        assertNotNull(routineSubject.getValue());
-        assertEquals(routine, routineSubject.getValue());
-
-    }
-
-    public void testFindAll() {
-        InMemoryDataSource dataSource = new InMemoryDataSource();
-        Routine morning = new Routine(0, "Morning Routine");
-        Routine evening = new Routine(1, "Evening Routine");
-        dataSource.putRoutine(morning);
-        dataSource.putRoutine(evening);
-        RoutineRepository repository = new RoutineRepository(dataSource);
-
-        Subject<List<Routine>> allRoutinesSubject = repository.findAll();
-        List<Routine> currentRoutines = allRoutinesSubject.getValue();
-
-        assertNotNull(currentRoutines);
-        assertEquals(2, currentRoutines.size());
-        assertTrue(currentRoutines.contains(morning));
-        assertTrue(currentRoutines.contains(evening));
-    }
-
-    public void testFindAllMappings() {
-        InMemoryDataSource dataSource = new InMemoryDataSource();
-        Routine routine = new Routine(0, "Morning Routine");
-        dataSource.putRoutine(routine);
-
-        Task task = new Task(0, "Wake up");
-        dataSource.putTask(routine, task);
-        RoutineRepository repository = new RoutineRepository(dataSource);
-
-        Subject<Map<Routine, List<Task>>> mapSubject = repository.findAllMappings();
-        Map<Routine, List<Task>> routineTaskMap = mapSubject.getValue();
-
-        assertNotNull(routineTaskMap);
-        assertTrue(routineTaskMap.containsKey(routine));
-        assertTrue(routineTaskMap.get(routine).contains(task));
-    }
-
-    public void testSaveRoutine() {
-        InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
-        Routine routine = new Routine(0, "Morning Routine");
-        repository.save(routine);
-
-        Routine getRoutineResult = dataSource.getRoutine(0);
-        assertNotNull(getRoutineResult);
-        assertEquals(routine, getRoutineResult);
-    }
-
     public void testTestSaveRoutineList() {
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
         Routine morning = new Routine(0, "Morning Routine");
         Routine evening = new Routine(1, "Evening Routine");
         repository.save(List.of(morning, evening));
@@ -80,7 +11,7 @@ public class RoutineRepositoryTest extends TestCase {
 
     public void testSwapTaskOrder() {
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
         
         Routine routine = new Routine(1, "Test Routine");
         repository.save(routine);
@@ -118,7 +49,7 @@ public class RoutineRepositoryTest extends TestCase {
     
     public void testSwapTaskOrderErrorHandling() {
         InMemoryDataSource dataSource = new InMemoryDataSource();
-        RoutineRepository repository = new RoutineRepository(dataSource);
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
         
         Routine routine = new Routine(1, "Test Routine");
         repository.save(routine);
@@ -154,5 +85,32 @@ public class RoutineRepositoryTest extends TestCase {
         assertEquals(2, tasks.size());
         assertEquals(Integer.valueOf(101), tasks.get(0).getId());
         assertEquals(Integer.valueOf(102), tasks.get(1).getId());
+    }
+
+    public void testAddTask() {
+        InMemoryDataSource dataSource = new InMemoryDataSource();
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
+        Task task = new Task(0, "Wash Face");
+        Task expectedTask = new Task(0, "Wash Face");
+        Routine routine = new Routine(0, "Morning Routine");
+        repository.save(routine);
+
+        repository.addTask(routine, task);
+        assertEquals(dataSource.getTasks(routine).size(), 1);
+        assertEquals(dataSource.getTasks(routine).get(0), expectedTask);
+    }
+
+    public void testAddRoutine() {
+        InMemoryDataSource dataSource = new InMemoryDataSource();
+        RoutineRepository repository = new SimpleRoutineRepository(dataSource);
+
+        Routine routine = new Routine(0, "Morning Routine");
+        Integer expectedId = 0;
+        String expectedName = "Morning Routine";
+
+        repository.addRoutine(routine);
+        assertEquals(dataSource.getRoutines().size(), 1);
+        assertEquals(dataSource.getRoutines().get(0).id(), expectedId);
+        assertEquals(dataSource.getRoutines().get(0).getName(), expectedName);
     }
 }

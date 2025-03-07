@@ -1,39 +1,27 @@
 package edu.ucsd.cse110.habitizer.lib.domain;
 
-
 import java.util.List;
 import java.util.Map;
 
-import edu.ucsd.cse110.habitizer.lib.data.InMemoryDataSource;
 import edu.ucsd.cse110.observables.Subject;
 
-public class RoutineRepository {
-    private final InMemoryDataSource dataSource;
+public interface RoutineRepository {
+    Subject<Routine> find(int id);
 
-    public RoutineRepository(InMemoryDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+    Subject<List<Routine>> findAll();
 
-    public Subject<Routine> find(int id){
-        return dataSource.getRoutineSubject(id);
-    }
+    Subject<Map<Routine, List<Task>>> findAllMappings();
 
-    public Subject<List<Routine>> findAll(){
-        return dataSource.getAllRoutinesSubject();
-    }
+    void save(Routine routine);
 
-    public Subject<Map<Routine, List<Task>>> findAllMappings(){
-        return dataSource.getMapSubject();
-    }
+    void save(List<Routine> routines);
 
-    public void save(Routine routine){
-        dataSource.putRoutine(routine);
-    }
+    void addTask(Routine routine, Task task);
 
-    public void save(List<Routine> routines){
-        dataSource.putRoutines(routines);
-    }
-    
+    void updateTaskName(int taskId, String newName);
+
+    void addRoutine(Routine routine);
+
     /**
      * Swaps the order of two tasks in a routine
      * @param routine The routine containing the tasks
@@ -42,16 +30,7 @@ public class RoutineRepository {
      * @throws IllegalArgumentException if positions are invalid or routine doesn't exist
      * @throws IllegalStateException if a task has a null ID
      */
-    public void swapTaskOrder(Routine routine, int fromPosition, int toPosition) {
-        if (routine == null) {
-            throw new IllegalArgumentException("Routine cannot be null");
-        }
-        
-        try {
-            dataSource.swapTaskOrder(routine, fromPosition, toPosition);
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to swap task order: " + e.getMessage(), e);
-        }
-    }
+    void swapTaskOrder(Routine routine, int fromPosition, int toPosition);
 
+    void renameRoutine(Routine routine, String newName);
 }

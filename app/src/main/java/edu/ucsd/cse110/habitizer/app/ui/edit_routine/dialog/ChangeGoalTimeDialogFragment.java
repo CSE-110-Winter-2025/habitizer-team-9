@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,27 +12,32 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogRenameTaskBinding;
-import edu.ucsd.cse110.habitizer.app.ui.edit_routine.EditRoutineAdapter;
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
+import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogGoalTimeBinding;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
-public class RenameTaskDialogFragment extends DialogFragment {
+public class ChangeGoalTimeDialogFragment extends DialogFragment {
 
-    private FragmentDialogRenameTaskBinding view;
+    private @NonNull FragmentDialogGoalTimeBinding view;
     private MainViewModel activityModel;
-    private Task currentTask;
-    private EditRoutineAdapter adapter;
-
-    public RenameTaskDialogFragment(Task currentTask, EditRoutineAdapter adapter) {
-        this.currentTask = currentTask;
-        this.adapter = adapter;
+    private Routine routine;
+    private OnGoalTimeUpdatedListener listener;
+    ChangeGoalTimeDialogFragment(Routine routine) {
+        this.routine = routine;
     }
 
-    public static RenameTaskDialogFragment newInstance(Task task, EditRoutineAdapter parentAdapter) {
-        var fragment = new RenameTaskDialogFragment(task, parentAdapter);
+    public interface OnGoalTimeUpdatedListener {
+        void onGoalTimeUpdated(long newGoalTime);
+    }
+
+    public static ChangeGoalTimeDialogFragment newInstance(Routine routine) {
+        var fragment = new ChangeGoalTimeDialogFragment(routine);
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void setOnGoalTimeUpdatedListener(OnGoalTimeUpdatedListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -47,26 +53,31 @@ public class RenameTaskDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        this.view = FragmentDialogRenameTaskBinding.inflate(getLayoutInflater());
+        this.view = FragmentDialogGoalTimeBinding.inflate(getLayoutInflater());
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle("Rename Task")
-                .setMessage("Please provide the new name of this task.")
+                .setTitle("Set Goal Time")
+                .setMessage("Please provide the goal time for this routine.")
                 .setView(view.getRoot())
-                .setPositiveButton("Rename", this::onPositiveButtonClick)
+                .setPositiveButton("Set", this::onPositiveButtonClick)
                 .setNegativeButton("Cancel", this::onNegativeButtonClick)
                 .create();
     }
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
-        var newTaskName = view.taskNameEditText.getText().toString();
-        activityModel.updateTaskName(currentTask.getId(), newTaskName);
-//        currentTask.rename(newTaskName);
-//        adapter.notifyDataSetChanged();
+        String newGoalTime = view.goalTimeText.getText().toString();
+        try {
+            routine.setGoalTime(Long.parseLong(newGoalTime));
+        } catch (Exception e) {
+            Log.d("Not a valid time", newGoalTime);
+        }
+
+        if (listener != null) {
+            listener.onGoalTimeUpdated(Long.parseLong(newGoalTime));
+        }
+
         dialog.dismiss();
     }
-
-
 
     private void onNegativeButtonClick(DialogInterface dialog, int which) {
         dialog.cancel();

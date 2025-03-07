@@ -59,15 +59,14 @@ public class RoutineTimer {
         if (mockMode) {
             mockMode = false;
             start(); // Restart real-time tracking
-            if (startTime == null) {
+
+            if (elapsedTime > 0) { // Ensure elapsed time is not reset before setting startTime
+                startTime = Instant.now().minusSeconds(elapsedTime);
+            } else if (startTime == null) {
                 startTime = Instant.now();
             }
-            // Synchronize elapsed time
-            startTime = Instant.now().minusSeconds(elapsedTime);
         }
     }
-
-
 
     public void advanceMockTime(int seconds) {
         if (!mockMode) {
@@ -83,5 +82,25 @@ public class RoutineTimer {
 
     public long getElapsedTimeInSeconds() {
         return elapsedTime;
+    }
+
+    public boolean getIsMocking() {
+        return mockMode;
+    }
+
+    public void setIsMocking(boolean mock) {
+        mockMode = mock;
+    }
+
+    public long getElapsedTime() {
+        return elapsedTime;
+    }
+
+    public void setElapsedTime(long time) {
+        elapsedTime = time;
+    }
+
+    public boolean getRunning() {
+        return running;
     }
 }

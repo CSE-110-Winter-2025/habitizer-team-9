@@ -20,24 +20,4 @@ public class MainActivity extends AppCompatActivity {
         this.view = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(view.getRoot());
     }
-
-    // Finish this later, not needed for this task
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // getMenuInflater().inflate(R.menu.action_bar, menu);
-//        return true;
-//    }
-
-//    private void swapFragments() {
-//        if (isShowingRoutines) {
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.fragment_container, RoutinesFragment.newInstance())
-//                    .commit();
-//        } else {
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.fragment_container, TaskListFragment.newInstance())
-//        }
-//    }
 }
