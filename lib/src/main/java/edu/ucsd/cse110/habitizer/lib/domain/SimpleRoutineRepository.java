@@ -83,7 +83,11 @@ public class SimpleRoutineRepository implements RoutineRepository {
         routine.rename(newName);
     }
 
+    @Override
+    public void moveTaskUp(Routine routine, Task task) {dataSource.moveTaskUp(routine, task);}
 
-
-
+    @Override
+    public void moveTaskDown(Routine routine, Task task) {
+        dataSource.moveTaskDown(routine, task);
+    }
 }
