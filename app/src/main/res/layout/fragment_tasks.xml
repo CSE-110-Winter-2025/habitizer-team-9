@@ -13,7 +13,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="72dp"
-        android:text="0m / 0m / -"
+        android:text="0m / -"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/routineName"
