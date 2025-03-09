@@ -58,13 +58,12 @@ public class RoutineTimer {
     public void disableMockMode() {
         if (mockMode) {
             mockMode = false;
-            start(); // Restart real-time tracking
-
             if (elapsedTime > 0) { // Ensure elapsed time is not reset before setting startTime
                 startTime = Instant.now().minusSeconds(elapsedTime);
             } else if (startTime == null) {
                 startTime = Instant.now();
             }
+            start(); // Restart real-time tracking
         }
     }
 

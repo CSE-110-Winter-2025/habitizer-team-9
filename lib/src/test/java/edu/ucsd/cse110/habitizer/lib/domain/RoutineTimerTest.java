@@ -52,7 +52,7 @@ public class RoutineTimerTest extends TestCase {
 
         System.out.println("Switching to real time...");
         timer.disableMockMode(); // Switch back to real time
-        timer.start(); // Start real-time tracking
+         // Start real-time tracking
         Thread.sleep(5000); // Wait for 5 seconds instead of 2 seconds
         timer.stop();
 
