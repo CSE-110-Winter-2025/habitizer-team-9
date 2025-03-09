@@ -109,7 +109,8 @@ public class RoutineTimer {
         return running;
     }
 
+    // change to return in seconds. make sure to update the 60 in other files
     public int getTaskTime() {
-        return (int)((elapsedTime - oldElapsedTime)/60);
+        return (int)((elapsedTime - oldElapsedTime));
     }
 }
