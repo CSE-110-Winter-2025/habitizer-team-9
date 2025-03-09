@@ -15,7 +15,7 @@ public class RoutineTimer {
     private ScheduledExecutorService scheduler;
     private boolean running = false;
     private final Consumer<Integer> onTimeUpdate;
-    private boolean isPaused = true;
+    private boolean isPaused = false;
 
     public RoutineTimer(Consumer<Integer> onTimeUpdate) {
         this.onTimeUpdate = onTimeUpdate;
@@ -59,12 +59,14 @@ public class RoutineTimer {
     public void disableMockMode() {
         if (mockMode) {
             mockMode = false;
-            start(); // Restart real-time tracking
+            if(!isPaused) {
+                start(); // Restart real-time tracking
 
-            if (elapsedTime > 0) { // Ensure elapsed time is not reset before setting startTime
-                startTime = Instant.now().minusSeconds(elapsedTime);
-            } else if (startTime == null) {
-                startTime = Instant.now();
+                if (elapsedTime > 0) { // Ensure elapsed time is not reset before setting startTime
+                    startTime = Instant.now().minusSeconds(elapsedTime);
+                } else if (startTime == null) {
+                    startTime = Instant.now();
+                }
             }
         }
     }
@@ -73,8 +75,10 @@ public class RoutineTimer {
         if (!mockMode) {
             throw new IllegalStateException("Cannot advance time in real mode. Enable mock mode first.");
         }
-        elapsedTime += seconds;
-        onTimeUpdate.accept((int) elapsedTime);
+        if(!isPaused) {
+            elapsedTime += seconds;
+            onTimeUpdate.accept((int) elapsedTime);
+        }
     }
 
     public int getElapsedMinutes() {
@@ -87,10 +91,19 @@ public class RoutineTimer {
 
     public void pauseRoutine() {
         isPaused = true;
+        stop();
     }
 
     public void resumeRoutine() {
         isPaused = false;
+
+        start(); // Restart real-time tracking
+
+        if (elapsedTime > 0) { // Ensure elapsed time is not reset before setting startTime
+            startTime = Instant.now().minusSeconds(elapsedTime);
+        } else if (startTime == null) {
+            startTime = Instant.now();
+        }
     }
 
     public boolean getIsMocking() {

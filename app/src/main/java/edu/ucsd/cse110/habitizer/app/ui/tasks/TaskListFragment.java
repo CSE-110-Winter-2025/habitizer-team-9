@@ -126,10 +126,14 @@ public class TaskListFragment extends Fragment {
         pausePlayButton.setOnClickListener(v -> {
             boolean isPaused = activityModel.getRoutineTimer().getIsPaused();
             if (isPaused) {
-                pausePlayButton.setImageResource(R.drawable.play);
+
+                pausePlayButton.setImageResource(R.drawable.pause);
                 activityModel.getRoutineTimer().resumeRoutine();
             } else {
-                pausePlayButton.setImageResource(R.drawable.pause);
+
+                // starts off not paused, clicking to pause
+                        // the button signifies what state is next
+                pausePlayButton.setImageResource(R.drawable.play);
                 activityModel.getRoutineTimer().pauseRoutine();
             }
         });
