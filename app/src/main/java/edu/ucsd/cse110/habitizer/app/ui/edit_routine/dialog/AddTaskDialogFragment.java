@@ -57,7 +57,14 @@ public class AddTaskDialogFragment extends DialogFragment {
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
         var taskName = view.taskNameText.getText().toString();
-        var taskId = activityModel.getMap().getValue().get(routine).size();
+        
+        var routineTaskMap = activityModel.getMap().getValue();
+        
+        int taskId = 0;
+        if (routineTaskMap != null && routineTaskMap.containsKey(routine) && routineTaskMap.get(routine) != null) {
+            taskId = routineTaskMap.get(routine).size();
+        }
+        
         var task = new Task(taskId, taskName);
         activityModel.addTask(routine, task);
         dialog.dismiss();

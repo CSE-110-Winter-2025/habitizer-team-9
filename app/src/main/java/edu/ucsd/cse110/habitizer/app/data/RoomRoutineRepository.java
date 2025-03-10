@@ -172,15 +172,24 @@ public class RoomRoutineRepository implements RoutineRepository {
             // Add new task to the list
             currentTasks.add(taskToSave);
             
+            // Create a subject for this routine if it doesn't exist
+            if (!routineTaskSubjects.containsKey(routine)) {
+                routineTaskSubjects.put(routine, new PlainMutableSubject<>(new ArrayList<>()));
+            }
+            
             // Update the subject
-
             routineTaskSubjects.get(routine).setValue(currentTasks);
-
             
             // Update the map subject
             Map<Routine, List<Task>> currentMap = allRoutineTasksSubject.getValue();
+            if (currentMap == null) {
+                currentMap = new HashMap<>();
+            }
             currentMap.put(routine, currentTasks);
             allRoutineTasksSubject.setValue(currentMap);
+            
+            // Do a full refresh to ensure consistency
+            refreshData();
         } catch (Exception e) {
             Log.e(TAG, "Error adding task: " + task.getName() + " to routine: " + routine.getName(), e);
         }

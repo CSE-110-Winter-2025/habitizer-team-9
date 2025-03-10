@@ -85,6 +85,7 @@ public class MainViewModel extends ViewModel {
     {
         try {
             routineRepository.addTask(routine, task);
+            refreshData();
         } catch (Exception e) {
             Log.e("MainViewModel", "Error adding task: " + e.getMessage());
         }
