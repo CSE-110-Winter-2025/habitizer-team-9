@@ -126,6 +126,11 @@ public class RoutineTimer {
         return running;
     }
 
+    public int getTaskTime() {
+        return (int)((elapsedTime - oldElapsedTime));
+
+    }
+
     public boolean getIsPaused() {
         return isPaused;
     }
