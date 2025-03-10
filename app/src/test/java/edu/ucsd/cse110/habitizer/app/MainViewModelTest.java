@@ -129,7 +129,7 @@ public class MainViewModelTest {
         routineTimer.setElapsedTime(60);
         mainViewModel.setRoutineTimer(routineTimer);
         mainViewModel.advanceMockTime();
-        assertEquals(routineTimer.getElapsedTime(), 75);
+        assertEquals(routineTimer.getElapsedTime(), 90);
 
         routineTimer.setIsMocking(false);
         routineTimer.setElapsedTime(60);

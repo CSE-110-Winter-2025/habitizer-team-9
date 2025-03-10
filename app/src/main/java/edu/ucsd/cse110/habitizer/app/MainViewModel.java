@@ -55,7 +55,7 @@ public class MainViewModel extends ViewModel {
 
     public void advanceMockTime() {
         if(routineTimer.getIsMocking()) {
-            routineTimer.advanceMockTime(15);
+            routineTimer.advanceMockTime(30);
         }
     }
 

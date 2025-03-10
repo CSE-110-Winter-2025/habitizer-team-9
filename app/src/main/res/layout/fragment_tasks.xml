@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="Advance Time by 15s" />
+            android:text="Advance Time by 30s" />
     </LinearLayout>
 
     <ListView
