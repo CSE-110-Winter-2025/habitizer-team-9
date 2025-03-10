@@ -42,4 +42,8 @@ public interface RoutineRepository {
     void moveTaskDown(Routine routine, Task task);
 
     void renameRoutine(Routine routine, String newName);
+
+    void deleteTask(int taskId);
+
+    void deleteRoutine(int routineId);
 }

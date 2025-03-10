@@ -26,8 +26,9 @@ public class AddRoutineDialogFragment extends DialogFragment {
     private FragmentDialogAddRoutineBinding view;
     private MainViewModel activityModel;
 
+    private Routine routine;
+
     public AddRoutineDialogFragment() {
-        // Required empty public constructor
     }
 
     public static AddRoutineDialogFragment newInstance() {
@@ -70,8 +71,9 @@ public class AddRoutineDialogFragment extends DialogFragment {
             routineName = "New Routine";
         }
         var routineId = activityModel.getRoutines().getValue().size();
-        Routine routine = new Routine(routineId, routineName);
+        routine = new Routine(routineId, routineName);
         activityModel.addRoutine(routine);
+
 
         // Switch to edit menu
         dialog.dismiss();

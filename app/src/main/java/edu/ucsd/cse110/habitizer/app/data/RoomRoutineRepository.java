@@ -23,14 +23,11 @@ public class RoomRoutineRepository implements RoutineRepository {
     private final Map<Routine, PlainMutableSubject<List<Task>>> routineTaskSubjects;
     
     public RoomRoutineRepository(AppDatabase db) {
-//        super(null); // We're not using the parent class's InMemoryDataSource
         this.db = db;
         this.allRoutinesSubject = new PlainMutableSubject<>(new ArrayList<>());
         this.routineSubjects = new HashMap<>();
         this.allRoutineTasksSubject = new PlainMutableSubject<>(new HashMap<>());
         this.routineTaskSubjects = new HashMap<>();
-        
-        // Initial load of data from database
         refreshData();
     }
     
@@ -175,15 +172,24 @@ public class RoomRoutineRepository implements RoutineRepository {
             // Add new task to the list
             currentTasks.add(taskToSave);
             
+            // Create a subject for this routine if it doesn't exist
+            if (!routineTaskSubjects.containsKey(routine)) {
+                routineTaskSubjects.put(routine, new PlainMutableSubject<>(new ArrayList<>()));
+            }
+            
             // Update the subject
-
             routineTaskSubjects.get(routine).setValue(currentTasks);
-
             
             // Update the map subject
             Map<Routine, List<Task>> currentMap = allRoutineTasksSubject.getValue();
+            if (currentMap == null) {
+                currentMap = new HashMap<>();
+            }
             currentMap.put(routine, currentTasks);
             allRoutineTasksSubject.setValue(currentMap);
+            
+            // Do a full refresh to ensure consistency
+            refreshData();
         } catch (Exception e) {
             Log.e(TAG, "Error adding task: " + task.getName() + " to routine: " + routine.getName(), e);
         }
@@ -354,7 +360,6 @@ public class RoomRoutineRepository implements RoutineRepository {
     @Override
     public void renameRoutine(Routine routine, String newName) {
         try {
-            // Update the routine in the database
             db.routineDao().updateRoutineName(routine.id(), newName);
             routine.rename(newName);
 
@@ -367,50 +372,25 @@ public class RoomRoutineRepository implements RoutineRepository {
         }
     }
 
-//    public void moveTaskUp(Routine routine, Task task){
-//        List<Task> tasks = routineTaskMap.get(routine);
-//
-//        for(int i = 0; i < tasks.size(); i++){
-//            if(tasks.get(i) == task){
-//                if(i == 0){
-//                    Task top = tasks.get(0);
-//                    tasks.set(0, tasks.get(tasks.size() - 1));
-//                    tasks.set(tasks.size() - 1, top);
-//                }else{
-//                    Task top = tasks.get(i);
-//                    tasks.set(i, tasks.get(i - 1));
-//                    tasks.set(i - 1, top);
-//                }
-//                break;
-//            }
-//        }
-//
-//        routineTaskSubjects.get(routine).setValue(routineTaskMap.get(routine));
-//        allRoutineTasks.setValue(routineTaskMap);
-//
-//    }
-//
-//    public void moveTaskDown(Routine routine, Task task){
-//        List<Task> tasks = routineTaskMap.get(routine);
-//
-//        for(int i = 0; i < tasks.size(); i++){
-//            if(tasks.get(i) == task){
-//                if(i == tasks.size() - 1){
-//                    Task bottom = tasks.get(tasks.size()-1);
-//                    tasks.set(tasks.size() - 1, tasks.get(0));
-//                    tasks.set(0, bottom);
-//                }else{
-//                    Task top = tasks.get(i);
-//                    tasks.set(i, tasks.get(i + 1));
-//                    tasks.set(i + 1, top);
-//                }
-//                break;
-//            }
-//        }
-//
-//        routineTaskSubjects.get(routine).setValue(routineTaskMap.get(routine));
-//        allRoutineTasks.setValue(routineTaskMap);
-//    }
+    @Override
+    public void deleteTask(int taskId) {
+        try {
+            db.taskDao().deleteById(taskId);
+            refreshData();
+        } catch (Exception e) {
+            Log.e("RoomRoutineRepository", "Error deleting task with ID: " + taskId, e);
+        }
+    }
+
+    @Override
+    public void deleteRoutine(int routineId) {
+        try {
+            db.routineDao().delete(routineId);
+            refreshData();
+        } catch (Exception e) {
+            Log.e("RoomRoutineRepository", "Error deleting routine with ID: " + routineId, e);
+        }
+    }
 
 
 

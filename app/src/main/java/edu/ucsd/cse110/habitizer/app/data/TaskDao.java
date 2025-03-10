@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.data;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -23,7 +24,7 @@ public interface TaskDao {
     void insertAll(List<TaskEntity> tasks);
 
     @Query("DELETE FROM tasks WHERE id = :id")
-    void delete(int id);
+    void deleteById(int id);
 
     @Query("DELETE FROM tasks WHERE routineId = :routineId")
     void deleteAllByRoutineId(int routineId);
@@ -39,4 +40,8 @@ public interface TaskDao {
     
     @Query("UPDATE tasks SET orderIndex = :orderIndex WHERE id = :taskId")
     void updateTaskOrderIndex(int taskId, int orderIndex);
+
+    @Delete
+    void delete(TaskEntity task);
+
 } 
