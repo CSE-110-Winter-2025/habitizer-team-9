@@ -31,9 +31,12 @@ public class RoutineTimer {
                 if (running) {
                     if (mockMode) {
                         onTimeUpdate.accept((int) elapsedTime);
+                        //onTimeUpdate.accept((int) taskTime);
                     } else {
                         elapsedTime = Duration.between(startTime, Instant.now()).getSeconds();
+                        //taskTime = Duration.between(startTime, Instant.now()).getSeconds();
                         onTimeUpdate.accept((int) elapsedTime);
+                        //onTimeUpdate.accept((int) taskTime);
                     }
                 }
             }, 0, 1, TimeUnit.SECONDS);
@@ -47,6 +50,7 @@ public class RoutineTimer {
     public void reset() {
         stop();
         elapsedTime = 0;
+        //taskTime = 0;
         onTimeUpdate.accept(0);
     }
 
@@ -72,7 +76,9 @@ public class RoutineTimer {
             throw new IllegalStateException("Cannot advance time in real mode. Enable mock mode first.");
         }
         elapsedTime += seconds;
+        //taskTime += seconds;
         onTimeUpdate.accept((int) elapsedTime);
+        //onTimeUpdate.accept((int) taskTime);
     }
 
     public int getElapsedMinutes() {
@@ -105,5 +111,6 @@ public class RoutineTimer {
 
     public int getTaskTime() {
         return (int)((elapsedTime - oldElapsedTime));
+
     }
 }

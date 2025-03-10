@@ -52,7 +52,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             if(routineCompleted) return;
             task.checkOff();
             if(task.getIsCheckedOff()) {
-
                 int timeBetween = taskRoutine.routineTimer.getTaskTime();
 
                 if (timeBetween < 60){ // plus 5 rounds up
@@ -66,6 +65,7 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
                 // resets old elapsed time
                 taskRoutine.routineTimer.oldElapsedTime = taskRoutine.routineTimer.getElapsedTimeInSeconds();
+
             }else {
                 binding.taskTimestamp.setText("Task Incomplete");
             }
