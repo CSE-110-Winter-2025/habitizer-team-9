@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.habitizer.app.data;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -27,7 +28,6 @@ public interface RoutineDao {
 
     @Query("UPDATE routines SET name = :newName WHERE id = :id")
     void updateRoutineName(int id, String newName);
-
 
 
 } 

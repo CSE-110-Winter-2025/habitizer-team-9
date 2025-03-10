@@ -99,4 +99,14 @@ public class SimpleRoutineRepository implements RoutineRepository {
     public void moveTaskDown(Routine routine, Task task) {
         dataSource.moveTaskDown(routine, task);
     }
+
+    @Override
+    public void deleteTask(int taskId) {
+        dataSource.deleteTask(taskId);
+    }
+    @Override
+    public void deleteRoutine(int routineId){
+        dataSource.deleteRoutine(routineId);
+    }
+
 }
