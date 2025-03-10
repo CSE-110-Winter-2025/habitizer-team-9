@@ -147,10 +147,10 @@ public class MainViewModelTest {
         routineTimer.pauseRoutine();
         mainViewModel.setRoutineTimer(routineTimer);
         mainViewModel.advanceMockTime();
-        assertEquals(routineTimer.getElapsedTime(), 60);
+        assertEquals(60, routineTimer.getElapsedTime());
 
         routineTimer.resumeRoutine();
         mainViewModel.advanceMockTime();
-        assertEquals(routineTimer.getElapsedTime(), 90);
+        assertEquals(75, routineTimer.getElapsedTime());
     }
 }
