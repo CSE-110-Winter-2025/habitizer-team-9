@@ -110,6 +110,7 @@ public class RoutineTimer {
     }
 
     public int getTaskTime() {
-        return (int)((elapsedTime - oldElapsedTime)/60);
+        return (int)((elapsedTime - oldElapsedTime));
+
     }
 }

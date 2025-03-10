@@ -59,7 +59,16 @@ public class TaskListFragment extends Fragment {
         // Initialize the timer
         var routineTimer = new RoutineTimer(secondsElapsed -> {
             if (timerTextView != null) {
-                String output = String.valueOf(routine.routineTimer.getTaskTime()) + " m / ";
+                String output;
+                int taskTime = routine.routineTimer.getTaskTime();
+                if (taskTime < 60){
+                    taskTime = 5 * (taskTime/5); // rounded down by 5
+                    output = String.valueOf(taskTime) + " s / ";
+
+                }
+                else{
+                    output = String.valueOf(taskTime /60) + " m / ";
+                }
                 int minutes = secondsElapsed / 60; // Convert seconds to minutes
                 output = output + String.valueOf(minutes) + " m / ";
                 if(routine.getGoalTime() != 0){
