@@ -52,13 +52,12 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             if(routineCompleted) return;
             task.checkOff();
             if(task.getIsCheckedOff()) {
-                long previousElapsed = taskRoutine.routineTimer.oldElapsedTime;
-                long elapsedTime = taskRoutine.routineTimer.getElapsedTimeInSeconds();
 
-                int timeBetween = (int)((elapsedTime - previousElapsed)/60) +  1;
+                int timeBetween = taskRoutine.routineTimer.getTaskTime() +  1;
                 // plus 1 determines round up
 
-                taskRoutine.routineTimer.oldElapsedTime = elapsedTime;
+                // resets old elapsed time
+                taskRoutine.routineTimer.oldElapsedTime = taskRoutine.routineTimer.getElapsedTimeInSeconds();
                 binding.taskTimestamp.setText("" + timeBetween + "m");
             }else {
                 binding.taskTimestamp.setText("Task Incomplete");
