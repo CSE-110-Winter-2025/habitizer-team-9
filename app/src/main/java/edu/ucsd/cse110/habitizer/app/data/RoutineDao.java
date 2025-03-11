@@ -29,5 +29,6 @@ public interface RoutineDao {
     @Query("UPDATE routines SET name = :newName WHERE id = :id")
     void updateRoutineName(int id, String newName);
 
-
+    @Query("UPDATE routines SET goalTime = :newGoalTime WHERE id = :id")
+    void updateGoalTime(int id, long newGoalTime);
 } 

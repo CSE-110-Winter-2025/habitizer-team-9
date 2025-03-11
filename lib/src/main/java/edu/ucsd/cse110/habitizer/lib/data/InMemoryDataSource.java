@@ -237,11 +237,11 @@ public class InMemoryDataSource {
         }
     }
 
-    public void deleteRoutine(int id) {
-        Routine routineToRemove = routines.get(id);
+    public void deleteRoutine(int routineId) {
+        Routine routineToRemove = routines.get(routineId);
         if (routineToRemove == null) return;
-        routines.remove(id);
-        routineSubjects.remove(id);
+        routines.remove(routineId);
+        routineSubjects.remove(routineId);
 
         routineTaskMap.remove(routineToRemove);
 
@@ -249,6 +249,13 @@ public class InMemoryDataSource {
 
         allRoutinesSubject.setValue(new ArrayList<>(routines.values()));
         allRoutineTasks.setValue(routineTaskMap);
+    }
+
+    public void updateGoalTime(int routineId, long newGoalTime){
+        Routine routineToUpdate = routines.get(routineId);
+        routineToUpdate.setGoalTime(newGoalTime);
+        routineSubjects.get(routineId).setValue(routineToUpdate);
+        allRoutinesSubject.setValue(new ArrayList<>(routines.values()));
     }
 
 }

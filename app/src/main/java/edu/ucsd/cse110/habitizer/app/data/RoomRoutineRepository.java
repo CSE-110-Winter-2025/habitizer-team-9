@@ -378,7 +378,7 @@ public class RoomRoutineRepository implements RoutineRepository {
             db.taskDao().deleteById(taskId);
             refreshData();
         } catch (Exception e) {
-            Log.e("RoomRoutineRepository", "Error deleting task with ID: " + taskId, e);
+            Log.e(TAG, "Error deleting task with ID: " + taskId, e);
         }
     }
 
@@ -388,12 +388,19 @@ public class RoomRoutineRepository implements RoutineRepository {
             db.routineDao().delete(routineId);
             refreshData();
         } catch (Exception e) {
-            Log.e("RoomRoutineRepository", "Error deleting routine with ID: " + routineId, e);
+            Log.e(TAG, "Error deleting routine with ID: " + routineId, e);
         }
     }
 
-
-
+    @Override
+    public void updateGoalTime(int routineId, long newGoalTime){
+        try {
+            db.routineDao().updateGoalTime(routineId, newGoalTime);
+            refreshData();
+        } catch (Exception e) {
+            Log.e(TAG, "Error deleting routine with ID: " + routineId, e);
+        }
+    }
 
 
 } 

@@ -109,4 +109,9 @@ public class SimpleRoutineRepository implements RoutineRepository {
         dataSource.deleteRoutine(routineId);
     }
 
+    @Override
+    public void updateGoalTime(int routineId, long newGoalTime){
+        dataSource.updateGoalTime(routineId, newGoalTime);
+    }
+
 }
