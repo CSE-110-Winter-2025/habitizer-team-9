@@ -137,4 +137,20 @@ public class MainViewModelTest {
         mainViewModel.advanceMockTime();
         assertEquals(routineTimer.getElapsedTime(), 60);
     }
+
+    @Test
+    public void testPauseRoutine(){
+        RoutineTimer routineTimer = new RoutineTimer(secondsElapsed -> {});
+        routineTimer.setIsMocking(true);
+
+        routineTimer.setElapsedTime(60);
+        routineTimer.pauseRoutine();
+        mainViewModel.setRoutineTimer(routineTimer);
+        mainViewModel.advanceMockTime();
+        assertEquals(60, routineTimer.getElapsedTime());
+
+        routineTimer.resumeRoutine();
+        mainViewModel.advanceMockTime();
+        assertEquals(75, routineTimer.getElapsedTime());
+    }
 }

@@ -61,6 +61,36 @@ public class RoutineTimerTest extends TestCase {
         assertTrue(elapsedMinutes >= 2); // Ensure mock time is retained
     }
 
+    public void testPauseMock() {
+
+        timer.enableMockMode();
+        timer.pauseRoutine();
+        timer.advanceMockTime(120); // Advance 2 minutes in mock mode
+        assertEquals(0, timer.getElapsedMinutes());
+
+        timer.resumeRoutine();
+        timer.advanceMockTime(120); // Advance 2 minutes in mock mode
+        assertEquals(2, timer.getElapsedMinutes()); // Verify mock mode works
+    }
+
+    public void testPauseRealTime() throws InterruptedException {
+        timer.start(); // Start real-time tracking
+
+        Thread.sleep(5000); // Wait for 5 seconds instead of 2 seconds
+        assertTrue(timer.getElapsedTimeInSeconds() <= 6);
+
+        timer.pauseRoutine();
+
+        Thread.sleep(5000);
+
+        assertTrue(timer.getElapsedTimeInSeconds() <= 6);
+
+        timer.resumeRoutine();
+        Thread.sleep(5000);
+        assertTrue(timer.getElapsedTimeInSeconds() > 6);
+        timer.stop();
+    }
+
 
 
 
