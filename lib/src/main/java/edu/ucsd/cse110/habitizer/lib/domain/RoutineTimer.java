@@ -10,11 +10,12 @@ import java.util.function.Consumer;
 public class RoutineTimer {
     private Instant startTime;
     private long elapsedTime = 0; // Store elapsed time in seconds
-    public long oldElapsedTime = 0; // For calculating task time
+    public long oldElapsedTime = 0;
     private boolean mockMode = false;
     private ScheduledExecutorService scheduler;
     private boolean running = false;
     private final Consumer<Integer> onTimeUpdate;
+    private boolean isPaused = false;
 
     public RoutineTimer(Consumer<Integer> onTimeUpdate) {
         this.onTimeUpdate = onTimeUpdate;
@@ -31,12 +32,9 @@ public class RoutineTimer {
                 if (running) {
                     if (mockMode) {
                         onTimeUpdate.accept((int) elapsedTime);
-                        //onTimeUpdate.accept((int) taskTime);
                     } else {
                         elapsedTime = Duration.between(startTime, Instant.now()).getSeconds();
-                        //taskTime = Duration.between(startTime, Instant.now()).getSeconds();
                         onTimeUpdate.accept((int) elapsedTime);
-                        //onTimeUpdate.accept((int) taskTime);
                     }
                 }
             }, 0, 1, TimeUnit.SECONDS);
@@ -50,7 +48,6 @@ public class RoutineTimer {
     public void reset() {
         stop();
         elapsedTime = 0;
-        //taskTime = 0;
         onTimeUpdate.accept(0);
     }
 
@@ -62,10 +59,13 @@ public class RoutineTimer {
     public void disableMockMode() {
         if (mockMode) {
             mockMode = false;
-            if (elapsedTime > 0) { // Ensure elapsed time is not reset before setting startTime
-                startTime = Instant.now().minusSeconds(elapsedTime);
-            } else if (startTime == null) {
-                startTime = Instant.now();
+            if(!isPaused) {
+                start(); // Restart real-time tracking
+                if (elapsedTime > 0) { // Ensure elapsed time is not reset before setting startTime
+                    startTime = Instant.now().minusSeconds(elapsedTime);
+                } else if (startTime == null) {
+                    startTime = Instant.now();
+                }
             }
             start(); // Restart real-time tracking
         }
@@ -75,10 +75,10 @@ public class RoutineTimer {
         if (!mockMode) {
             throw new IllegalStateException("Cannot advance time in real mode. Enable mock mode first.");
         }
-        elapsedTime += seconds;
-        //taskTime += seconds;
-        onTimeUpdate.accept((int) elapsedTime);
-        //onTimeUpdate.accept((int) taskTime);
+        if(!isPaused) {
+            elapsedTime += seconds;
+            onTimeUpdate.accept((int) elapsedTime);
+        }
     }
 
     public int getElapsedMinutes() {
@@ -87,6 +87,23 @@ public class RoutineTimer {
 
     public long getElapsedTimeInSeconds() {
         return elapsedTime;
+    }
+
+    public void pauseRoutine() {
+        isPaused = true;
+        stop();
+    }
+
+    public void resumeRoutine() {
+        isPaused = false;
+
+        start(); // Restart real-time tracking
+
+        if (elapsedTime > 0) { // Ensure elapsed time is not reset before setting startTime
+            startTime = Instant.now().minusSeconds(elapsedTime);
+        } else if (startTime == null) {
+            startTime = Instant.now();
+        }
     }
 
     public boolean getIsMocking() {
@@ -112,5 +129,9 @@ public class RoutineTimer {
     public int getTaskTime() {
         return (int)((elapsedTime - oldElapsedTime));
 
+    }
+
+    public boolean getIsPaused() {
+        return isPaused;
     }
 }

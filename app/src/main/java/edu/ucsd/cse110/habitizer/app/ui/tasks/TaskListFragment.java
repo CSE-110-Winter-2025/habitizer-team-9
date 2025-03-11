@@ -1,11 +1,13 @@
 package edu.ucsd.cse110.habitizer.app.ui.tasks;
 
 import android.app.AlertDialog;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -27,8 +29,8 @@ public class TaskListFragment extends Fragment {
     private FragmentTasksBinding view;
     private ToggleButton mockModeToggle;
     private Button advanceTimeButton;
+    private ImageButton pausePlayButton;
     private TaskListAdapter adapter;
-
     private TextView timerTextView;
     private Routine routine;
 
@@ -107,6 +109,7 @@ public class TaskListFragment extends Fragment {
         mockModeToggle = view.mockModeToggle;
         advanceTimeButton = view.advanceTimeButton;
         Button endRoutineButton = view.endRoutineButton;
+        ImageButton pausePlayButton = view.pausePlayButton;
 
 
         // Set routine name
@@ -125,6 +128,21 @@ public class TaskListFragment extends Fragment {
         advanceTimeButton.setEnabled(mockModeToggle.isChecked());
         endRoutineButton.setOnClickListener(v -> endRoutineView(endRoutineButton, activityModel.endRoutine()));
 
+        // Pause/Resume button
+        pausePlayButton.setOnClickListener(v -> {
+            boolean isPaused = activityModel.getRoutineTimer().getIsPaused();
+            if (isPaused) {
+
+                pausePlayButton.setImageResource(R.drawable.pause);
+                activityModel.getRoutineTimer().resumeRoutine();
+            } else {
+
+                // starts off not paused, clicking to pause
+                        // the button signifies what state is next
+                pausePlayButton.setImageResource(R.drawable.play);
+                activityModel.getRoutineTimer().pauseRoutine();
+            }
+        });
 
         // Start the timer
         activityModel.getRoutineTimer().start();
