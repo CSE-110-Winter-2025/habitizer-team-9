@@ -68,6 +68,8 @@ public class ChangeGoalTimeDialogFragment extends DialogFragment {
         String newGoalTime = view.goalTimeText.getText().toString();
         try {
             routine.setGoalTime(Long.parseLong(newGoalTime));
+            long parsedGoalTime = Long.parseLong(newGoalTime);
+            activityModel.updateGoalTime(routine.id(), parsedGoalTime);
         } catch (Exception e) {
             Log.d("Not a valid time", newGoalTime);
         }

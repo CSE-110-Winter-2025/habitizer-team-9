@@ -14,7 +14,7 @@ public class RoutineEntity {
     @NonNull
     public final String name;
 
-    public final long goalTime;
+    public long goalTime;
 
     public RoutineEntity(int id, @NonNull String name, long goalTime) {
         this.id = id;

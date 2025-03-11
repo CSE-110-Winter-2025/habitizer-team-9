@@ -147,5 +147,6 @@ public class MainViewModel extends ViewModel {
         routineRepository.deleteRoutine(routineId);
     }
 
+    public void updateGoalTime(int routineId, long newGoalTime){routineRepository.updateGoalTime(routineId, newGoalTime);}
 
 }
