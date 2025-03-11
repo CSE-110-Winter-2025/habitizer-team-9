@@ -15,11 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
 import edu.ucsd.cse110.habitizer.app.R;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogAddRoutineBinding;
-import edu.ucsd.cse110.habitizer.app.databinding.FragmentDialogAddTaskBinding;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.EditRoutineFragment;
-import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.AddTaskDialogFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
 
 public class AddRoutineDialogFragment extends DialogFragment {
 
@@ -64,7 +61,6 @@ public class AddRoutineDialogFragment extends DialogFragment {
     }
 
     private void onPositiveButtonClick(DialogInterface dialog, int which) {
-        // Add routine
         var routineName = view.routineNameText.getText().toString();
         if (routineName.equals(""))
         {
@@ -75,7 +71,6 @@ public class AddRoutineDialogFragment extends DialogFragment {
         activityModel.addRoutine(routine);
 
 
-        // Switch to edit menu
         dialog.dismiss();
         FragmentActivity activity = (FragmentActivity) getContext();
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();

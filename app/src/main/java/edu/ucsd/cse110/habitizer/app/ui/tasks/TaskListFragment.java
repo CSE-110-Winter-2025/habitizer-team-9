@@ -2,7 +2,6 @@ package edu.ucsd.cse110.habitizer.app.ui.tasks;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.R;
 import edu.ucsd.cse110.habitizer.app.databinding.FragmentTasksBinding;
-import edu.ucsd.cse110.habitizer.app.ui.routines.RoutinesFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 import edu.ucsd.cse110.habitizer.lib.domain.RoutineTimer;
 import edu.ucsd.cse110.habitizer.lib.domain.Task;
-import edu.ucsd.cse110.habitizer.app.ui.tasks.TaskListAdapter;
 
 public class TaskListFragment extends Fragment {
     private MainViewModel activityModel;
@@ -132,10 +128,8 @@ public class TaskListFragment extends Fragment {
 
         // Start the timer
         activityModel.getRoutineTimer().start();
-        //IMPLEMENT WHEN TASK IS IMPLEMENTED <<
         view.taskList.setAdapter(adapter);
 
-        // Set up completion listener
         adapter.setCompletionListener(message -> requireActivity().runOnUiThread(() -> {
             showCompletionDialog(message);
         }));
@@ -145,7 +139,6 @@ public class TaskListFragment extends Fragment {
         return view.getRoot();
     }
 
-    // Dialog after completing all tasks
     private void showCompletionDialog(String message) {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Routine Completed")
@@ -153,7 +146,6 @@ public class TaskListFragment extends Fragment {
                 .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                 .show();
 
-        // Disable the "End Routine" button when routine ends automatically
         Button endRoutineButton = view.endRoutineButton;
         if (endRoutineButton != null) {
             endRoutineButton.setEnabled(false);
@@ -163,14 +155,11 @@ public class TaskListFragment extends Fragment {
     }
 
     public void endRoutineView(Button endRoutineButton, String message) {
-        // Disable the button
         endRoutineButton.setEnabled(false);
         endRoutineButton.setText("Routine Ended");
 
-        // Grey out the button
         endRoutineButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), android.R.color.darker_gray));
 
-        // Show pop-up for time summary
         showCompletionDialog(message);
     }
 
