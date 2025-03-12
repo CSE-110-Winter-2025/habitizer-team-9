@@ -1,10 +1,7 @@
 package edu.ucsd.cse110.habitizer.app;
 
 import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.viewmodel.ViewModelInitializer;
 

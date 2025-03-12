@@ -50,7 +50,7 @@ public class TaskEntity {
         
         return new TaskEntity(
             task.getId(),
-            task.getName() != null ? task.getName() : "",
+            task.getName(),
             routineId,
             task.getIsCheckedOff(),
             orderIndex
@@ -68,8 +68,4 @@ public class TaskEntity {
     public void setName(String name) {
         this.name = name;
     }
-    
-    public void setOrderIndex(int orderIndex) {
-        this.orderIndex = orderIndex;
-    }
-} 
+}

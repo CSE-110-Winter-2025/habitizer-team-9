@@ -2,8 +2,6 @@ package edu.ucsd.cse110.habitizer.app.ui.edit_routine;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

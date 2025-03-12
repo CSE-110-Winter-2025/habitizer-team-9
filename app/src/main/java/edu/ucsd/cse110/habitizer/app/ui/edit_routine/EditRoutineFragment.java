@@ -1,14 +1,11 @@
 package edu.ucsd.cse110.habitizer.app.ui.edit_routine;
 
-import android.app.AlertDialog;
-import android.media.Image;
+
 import android.os.Bundle;
-import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -19,12 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.ucsd.cse110.habitizer.app.MainViewModel;
-import edu.ucsd.cse110.habitizer.app.R;
-import edu.ucsd.cse110.habitizer.app.databinding.ListItemEditRoutineBinding;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.AddTaskDialogFragment;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.ChangeGoalTimeDialogFragment;
 import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.RenameRoutineDialogFragment;
-import edu.ucsd.cse110.habitizer.app.ui.edit_routine.dialog.RenameTaskDialogFragment;
 import edu.ucsd.cse110.habitizer.app.ui.routines.dialog.DeleteRoutineDialogFragment;
 import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 

@@ -103,17 +103,14 @@ public class RoomRoutineRepository implements RoutineRepository {
     @Override
     public void save(Routine routine) {
         try {
-            // Save routine to database
             db.routineDao().insert(RoutineEntity.fromDomain(routine));
             
-            // Update subjects
             if (routineSubjects.containsKey(routine.id())) {
                 routineSubjects.get(routine.id()).setValue(routine);
             } else {
                 routineSubjects.put(routine.id(), new PlainMutableSubject<>(routine));
             }
             
-            // Refresh all data to ensure consistency
             refreshData();
         } catch (Exception e) {
             Log.e(TAG, "Error saving routine: " + routine.getName(), e);
@@ -123,16 +120,13 @@ public class RoomRoutineRepository implements RoutineRepository {
     @Override
     public void save(List<Routine> routines) {
         try {
-            // Convert to entities
             List<RoutineEntity> entities = new ArrayList<>();
             for (Routine routine : routines) {
                 entities.add(RoutineEntity.fromDomain(routine));
             }
             
-            // Save to database
             db.routineDao().insertAll(entities);
             
-            // Refresh all data
             refreshData();
         } catch (Exception e) {
             Log.e(TAG, "Error saving routines", e);
@@ -142,25 +136,20 @@ public class RoomRoutineRepository implements RoutineRepository {
     @Override
     public void addTask(Routine routine, Task task) {
         try {
-            // Get the next order index
             Integer maxOrderIndex = db.taskDao().getMaxOrderIndex(routine.id());
             int orderIndex = (maxOrderIndex == null) ? 0 : maxOrderIndex + 1;
             
-            // Get the highest task ID to ensure uniqueness
             Integer maxId = db.taskDao().getMaxTaskId();
             int taskId = (maxId == null) ? 0 : maxId + 1;
             
-            // Create a new task with the unique ID
             Task taskToSave = new Task(taskId, task.getName());
             if (task.getIsCheckedOff()) {
                 taskToSave.checkOff();
             }
             
-            // Save task to database
             db.taskDao().insert(TaskEntity.fromDomain(taskToSave, routine.id(), orderIndex));
             
-            // Update in-memory collections without full refresh
-            // Get current tasks for this routine
+
             List<Task> currentTasks = new ArrayList<>();
             if (routineTaskSubjects.containsKey(routine)) {
                 List<Task> existingTasks = routineTaskSubjects.get(routine).getValue();
@@ -169,26 +158,20 @@ public class RoomRoutineRepository implements RoutineRepository {
                 }
             }
             
-            // Add new task to the list
             currentTasks.add(taskToSave);
             
-            // Create a subject for this routine if it doesn't exist
             if (!routineTaskSubjects.containsKey(routine)) {
                 routineTaskSubjects.put(routine, new PlainMutableSubject<>(new ArrayList<>()));
             }
             
-            // Update the subject
             routineTaskSubjects.get(routine).setValue(currentTasks);
             
-            // Update the map subject
             Map<Routine, List<Task>> currentMap = allRoutineTasksSubject.getValue();
             if (currentMap == null) {
                 currentMap = new HashMap<>();
             }
             currentMap.put(routine, currentTasks);
             allRoutineTasksSubject.setValue(currentMap);
-            
-            // Do a full refresh to ensure consistency
             refreshData();
         } catch (Exception e) {
             Log.e(TAG, "Error adding task: " + task.getName() + " to routine: " + routine.getName(), e);
