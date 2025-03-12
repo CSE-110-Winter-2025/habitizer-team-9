@@ -7,22 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.ucsd.cse110.habitizer.app.R;
-import edu.ucsd.cse110.habitizer.app.databinding.ListItemTaskBinding; //?? for tasks?
-import edu.ucsd.cse110.habitizer.app.ui.routines.RoutinesFragment;
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
-import edu.ucsd.cse110.habitizer.app.databinding.FragmentTasksBinding;
-import edu.ucsd.cse110.habitizer.lib.domain.Routine;
-import edu.ucsd.cse110.habitizer.lib.domain.Task;
 import java.util.*;
+
+import edu.ucsd.cse110.habitizer.app.databinding.ListItemTaskBinding;
+import edu.ucsd.cse110.habitizer.lib.domain.Task;
+import edu.ucsd.cse110.habitizer.lib.domain.Routine;
 
 public class TaskListAdapter extends ArrayAdapter<Task> {
     private boolean routineCompleted = false;
@@ -75,7 +65,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         return binding.getRoot();
     }
 
-    // Method iterating all tasks to check for completion
     private void checkAllTasksCompleted(){
         if(routineCompleted) return;
         boolean allChecked = true;
@@ -91,7 +80,6 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
             routineCompleted = true;
             taskRoutine.routineTimer.stop();
             long totalTime = taskRoutine.routineTimer.getElapsedTimeInSeconds();
-            // plus one for round up
             String message = "All tasks completed. Total time taken: " + (totalTime / 60 + 1) + "m";
             notifyCompletion(message);
         }

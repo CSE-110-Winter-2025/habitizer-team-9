@@ -3,13 +3,9 @@ package edu.ucsd.cse110.habitizer.lib.domain;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
-import edu.ucsd.cse110.observables.Subject;
 
 public class Routine {
 
@@ -66,24 +62,12 @@ public class Routine {
         return isStarted;
     }
 
-    public void setIsStarted(boolean isStarted) {
-        this.isStarted = isStarted;
-    }
-
     public Instant getRoutineStartTime() {
         return routineStartTime;
     }
 
-    public void setRoutineStartTime(Instant instant) {
-        this.routineStartTime = instant;
-    }
-
     public Instant getTaskStartTime() {
         return taskStartTime;
-    }
-
-    public void setTaskStartTime(Instant instant) {
-        this.taskStartTime = instant;
     }
 
     public long getGoalTime() {
@@ -99,19 +83,6 @@ public class Routine {
     }
 
 
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Routine routine = (Routine) o;
-//        return id() == routine.id();
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Integer.hashCode(id());
-//    }
 
 
 }
