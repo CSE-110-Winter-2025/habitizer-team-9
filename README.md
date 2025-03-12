@@ -23,3 +23,29 @@ Velocity of 0.724, applied to 5 * 6 = 30 working hours total. 30 * 0. 724 = 21.7
 Number of estimated hours left for iteration 2: 20 hours.
 
 Therefore, all tasks for MS 1 can be estimated to be completed by the end of I2.
+
+**Iteration 3-4 Velocity Calculations:**
+
+List of Issues and Durations: (Issue, Expected Duration, Actual Duration):
+
+Story 1: 3 hours
+
+Story 2: 1 hour
+
+Story 3: 4 hours
+
+Story 4: 5 hours
+
+Developer Story 1: 2 hours
+
+Developer Story 2: 2 hours
+
+Developer Story 3: 2 hours
+
+Velocity Calculation:  Expected Duration / Actual Duration = (3+1+4+5+2+2+2) / 26 documented working hours = 19/26 = 0.7307
+
+Velocity of 0.7307, applied to 5 * 6 = 30 working hours total. 30 * 0.7307 = 21.92 hours.
+
+Number of estimated hours left for iteration 4: 20 hours.
+
+Therefore, all tasks for MS 2 can be estimated to be completed by the end of I4.
