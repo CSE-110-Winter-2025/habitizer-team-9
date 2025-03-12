@@ -46,4 +46,6 @@ public interface RoutineRepository {
     void deleteTask(int taskId);
 
     void deleteRoutine(int routineId);
+
+    void updateGoalTime(int routineId, long newGoalTime);
 }
